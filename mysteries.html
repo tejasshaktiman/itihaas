@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITIHAS — The 3D Sanctum of Puri</title>
+  <!-- Single reliable core bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #040208;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    #webgl-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      display: block;
+    }
+
+    /* =========================================================
+       1. INITIAL CLOUD CURTAIN OVERLAY
+       ========================================================= */
+    #cloud-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .cloud-half {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 55vw;
+      background: radial-gradient(circle at center, #260e40 0%, #0d041a 60%, #040208 100%);
+      transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s ease;
+    }
+
+    .cloud-left { left: 0; }
+    .cloud-right { right: 0; }
+
+    #cloud-curtain.parted .cloud-left {
+      transform: translateX(-105%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #cloud-curtain.parted .cloud-right {
+      transform: translateX(105%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .unveil-prompt {
+      position: relative;
+      z-index: 60;
+      text-align: center;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .unveil-prompt span {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 6px 18px;
+      border-radius: 30px;
+      margin-bottom: 12px;
+    }
+
+    .unveil-prompt h1 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    }
+
+    .unveil-prompt p {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-top: 6px;
+    }
+
+    /* =========================================================
+       2. TOP BAR & CONTROLS
+       ========================================================= */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 40;
+      background: linear-gradient(180deg, rgba(4,2,8,0.9) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      pointer-events: auto;
+    }
+
+    .brand-glyph {
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, #a855f7, #581c87);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .brand-title span {
+      color: #fbbf24;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+
+    .nav-btn {
+      background: rgba(30, 14, 54, 0.7);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      pointer-events: auto;
+    }
+
+    /* Interactive Hotspot Buttons */
+    .hint-legend {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hotspot-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(18, 9, 31, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      color: #f1f5f9;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s ease;
+    }
+
+    .hotspot-chip:hover {
+      border-color: #fbbf24;
+      color: #fbbf24;
+      transform: translateX(4px);
+    }
+
+    .dot-flag { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+    .dot-prasad { width: 9px; height: 9px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+    .dot-gate { width: 9px; height: 9px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+
+    /* =========================================================
+       3. RIGHT MYSTERY SLIDE-OUT DRAWER
+       ========================================================= */
+    #mystery-drawer {
+      position: fixed;
+      top: 75px;
+      bottom: 30px;
+      right: -440px;
+      width: 390px;
+      max-width: 90vw;
+      background: rgba(14, 7, 24, 0.94);
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+      z-index: 45;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    #mystery-drawer.open {
+      right: 24px;
+    }
+
+    .drawer-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .drawer-close:hover { color: #ffffff; }
+
+    .drawer-badge {
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .badge-flag-pill { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; }
+    .badge-prasad-pill { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fde68a; }
+    .badge-gate-pill { background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #bae6fd; }
+
+    .drawer-title {
+      font-size: 19px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .drawer-prose {
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+
+    .drawer-section {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .drawer-section strong {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WebGL 3D Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- ================= 1. DENSE CLOUDS CURTAIN ================= -->
+  <div id="cloud-curtain" onclick="unveilSanctum()">
+    <div class="cloud-half cloud-left"></div>
+    <div class="cloud-half cloud-right"></div>
+    <div class="unveil-prompt" id="prompt-box">
+      <span>✦ SACRED ENIGMA ACCESS</span>
+      <h1>Jagannath Puri: The 3D Sanctum</h1>
+      <p>Touch or click anywhere to part the storm clouds</p>
+    </div>
+  </div>
+
+  <!-- ================= 2. TOP HEADER ================= -->
+  <header>
+    <a href="index.html" class="brand-link">
+      <div class="brand-glyph">इ</div>
+      <div class="brand-title">ITIHAS<span>Mysteries</span></div>
+    </a>
+    <a href="index.html" class="nav-btn">← Home</a>
+  </header>
+
+  <!-- ================= 3. SHORTCUT CHIPS ================= -->
+  <div class="hint-legend">
+    <span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8;">Click 3D Artifacts in Scene:</span>
+    <div class="hotspot-chip" onclick="focusTarget('flag')">
+      <span class="dot-flag"></span> 01. The Reverse Flag (Patitapabana)
+    </div>
+    <div class="hotspot-chip" onclick="focusTarget('prasad')">
+      <span class="dot-prasad"></span> 02. The Inexhaustible Mahaprasad
+    </div>
+    <div class="hotspot-chip" onclick="focusTarget('gate')">
+      <span class="dot-gate"></span> 03. Lion's Gate (Acoustic Silence)
+    </div>
+  </div>
+
+  <!-- ================= 4. RIGHT MYSTERY DRAWER ================= -->
+  <div id="mystery-drawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <div>
+      <span class="drawer-badge" id="drawer-badge">ENIGMA</span>
+      <h2 class="drawer-title" id="drawer-title">Title</h2>
+      <div class="drawer-prose" id="drawer-prose">Description</div>
+
+      <div class="drawer-section">
+        <strong style="color: #fde68a;">Living Lore & Sacred Tradition:</strong>
+        <p style="font-size: 12px; color: #cbd5e1;" id="drawer-tradition">Tradition text</p>
+      </div>
+
+      <div class="drawer-section">
+        <strong style="color: #6ee7b7;">Empirical / Architectural Observation:</strong>
+        <p style="font-size: 12px; color: #cbd5e1;" id="drawer-science">Science text</p>
+      </div>
+    </div>
+
+    <div style="font-size: 10.5px; color: #64748b; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+      Drag mouse to orbit • Scroll to sink temple into mist
+    </div>
+  </div>
+
+  <!-- ================= 5. SELF-CONTAINED 3D ENGINE ================= -->
+  <script>
+    const SANCTUM_MYSTERIES = {
+      flag: {
+        badge: "badge-flag-pill",
+        badgeText: "AERODYNAMIC ENIGMA",
+        title: "The Reverse Wind Flag (Patitapabana)",
+        prose: "Atop the 214-foot Shikhara floats the sacred red Patitapabana flag. Coastal observers note that the flag consistently flutters in the opposite direction of the prevailing sea wind.",
+        tradition: "For over 800 continuous years, hereditary Chuna Sevakas scale the sheer 65-meter spire freehand without ropes daily at dusk to change the flag, symbolizing spiritual order superceding terrestrial laws.",
+        science: "Thermal differentials between the sun-heated sandstone tower and the oceanic breeze produce a localized convective drafting eddy, creating a localized reverse airflow."
+      },
+      prasad: {
+        badge: "badge-prasad-pill",
+        badgeText: "THE UNEXHAUSTED POTS",
+        title: "The Inexhaustible Mahaprasad",
+        prose: "The Rosaghara feeds tens of thousands of pilgrims daily. Food prepared here has never been recorded as running short or thrown out as waste, whether feeding 5,000 or 200,000.",
+        tradition: "Cooked exclusively by Suaras in seven unglazed earthen pots stacked vertically over a single wood fire. Traditional faith holds that the topmost earthen pot cooks first while the bottom one cooks last.",
+        science: "The porous clay pots and narrow vertical chimney stack channel steam upward, concentrating intense convective heat at the top of the stack first."
+      },
+      gate: {
+        badge: "badge-gate-pill",
+        badgeText: "ACOUSTIC MYSTERY",
+        title: "The Acoustic Silence of Singhadwara",
+        prose: "Outside the eastern Lion's Gate, the roar of the Bay of Bengal surf is clearly audible. The moment you take one step inside the stone threshold, all sound of the ocean completely ceases.",
+        tradition: "Folklore tells of Goddess Subhadra asking for stillness inside the temple, leading the divine presence to quiet the ocean at the gateway.",
+        science: "The entrance features a double right-angle stone baffle archway. The porous laterite and khondalite stone blocks absorb and deflect high-frequency ocean surf waves."
+      }
+    };
+
+    let scene, camera, renderer;
+    let templeGroup, flagMesh, kitchenMesh, gateMesh;
+    let lanternLight, ambientLight;
+    let isParted = false;
+
+    // Mouse Drag Rotation state
+    let isDragging = false;
+    let previousMouseX = 0;
+    let previousMouseY = 0;
+
+    function init() {
+      const canvas = document.getElementById("webgl-canvas");
+
+      // 1. Scene & Camera Setup
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x06020c);
+      scene.fog = new THREE.FogExp2(0x06020c, 0.012);
+
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 14, 52);
+      camera.lookAt(0, 12, 0);
+
+      // 2. Renderer
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // 3. Lighting (Immediate visibility)
+      ambientLight = new THREE.AmbientLight(0xd8b4fe, 0.75);
+      scene.add(ambientLight);
+
+      const moonLight = new THREE.DirectionalLight(0x93c5fd, 0.8);
+      moonLight.position.set(20, 40, 30);
+      scene.add(moonLight);
+
+      lanternLight = new THREE.PointLight(0xf59e0b, 0.2, 70);
+      lanternLight.position.set(0, 22, 10);
+      scene.add(lanternLight);
+
+      // 4. Build 3D Temple Geometry
+      buildTemple();
+
+      // 5. Setup Drag Controls & Click Detectors
+      setupInteractions();
+
+      animate();
+    }
+
+    function buildTemple() {
+      templeGroup = new THREE.Group();
+
+      // Materials
+      const stoneMat = new THREE.MeshLambertMaterial({ color: 0x3d2b56 });
+      const goldMat = new THREE.MeshLambertMaterial({ color: 0xfbbf24 });
+      const potMat = new THREE.MeshLambertMaterial({ color: 0xb45309 });
+      const gateMat = new THREE.MeshLambertMaterial({ color: 0x4a3b69 });
+
+      // --- A. Main Shikhara Spire ---
+      const spireGeo = new THREE.ConeGeometry(5.5, 24, 8);
+      const spire = new THREE.Mesh(spireGeo, stoneMat);
+      spire.position.y = 12;
+      templeGroup.add(spire);
+
+      // Rings on Spire
+      for (let y = 2; y < 20; y += 3) {
+        const ringGeo = new THREE.CylinderGeometry(5.5 - (y * 0.22), 5.5 - (y * 0.22), 0.5, 8);
+        const ring = new THREE.Mesh(ringGeo, stoneMat);
+        ring.position.y = y;
+        spire.add(ring);
+      }
+
+      // --- B. Golden Nilachakra Disc ---
+      const chakraGeo = new THREE.CylinderGeometry(1.4, 1.4, 0.3, 16);
+      const chakra = new THREE.Mesh(chakraGeo, goldMat);
+      chakra.position.set(0, 24.5, 0);
+      templeGroup.add(chakra);
+
+      // --- C. The Red Flag (Flag Artifact) ---
+      const flagGeo = new THREE.PlaneGeometry(3.6, 1.8, 6, 2);
+      const flagMat = new THREE.MeshBasicMaterial({ color: 0xef4444, side: THREE.DoubleSide });
+      flagMesh = new THREE.Mesh(flagGeo, flagMat);
+      flagMesh.position.set(2.2, 25.2, 0);
+      flagMesh.name = "flag";
+      templeGroup.add(flagMesh);
+
+      // --- D. Mandapa Pavilion ---
+      const hallGeo = new THREE.ConeGeometry(4.5, 10, 4);
+      const hall = new THREE.Mesh(hallGeo, stoneMat);
+      hall.position.set(0, 5, 8);
+      hall.rotation.y = Math.PI / 4;
+      templeGroup.add(hall);
+
+      // --- E. Kitchen / Mahaprasad (Pots Artifact) ---
+      kitchenMesh = new THREE.Group();
+      kitchenMesh.name = "prasad";
+      const kitchenBase = new THREE.Mesh(new THREE.BoxGeometry(6, 3, 7), stoneMat);
+      kitchenBase.position.set(-14, 1.5, 2);
+      kitchenMesh.add(kitchenBase);
+
+      // 3 Stacked Earthen Pots
+      for (let p = 0; p < 3; p++) {
+        const potGeo = new THREE.CylinderGeometry(0.7 - (p * 0.1), 0.8 - (p * 0.1), 0.6, 8);
+        const pot = new THREE.Mesh(potGeo, potMat);
+        pot.position.set(-14, 3.4 + (p * 0.6), 2);
+        kitchenMesh.add(pot);
+      }
+      templeGroup.add(kitchenMesh);
+
+      // --- F. Lion's Gate (Singhadwara Artifact) ---
+      gateMesh = new THREE.Group();
+      gateMesh.name = "gate";
+      const pillarL = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5, 1.2), gateMat);
+      pillarL.position.set(-2.5, 2.5, 18);
+      const pillarR = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5, 1.2), gateMat);
+      pillarR.position.set(2.5, 2.5, 18);
+      const arch = new THREE.Mesh(new THREE.BoxGeometry(6.2, 1.2, 1.5), goldMat);
+      arch.position.set(0, 5, 18);
+      gateMesh.add(pillarL);
+      gateMesh.add(pillarR);
+      gateMesh.add(arch);
+      templeGroup.add(gateMesh);
+
+      // --- G. Pavement Ground Disc ---
+      const groundGeo = new THREE.CylinderGeometry(32, 32, 0.4, 24);
+      const groundMat = new THREE.MeshLambertMaterial({ color: 0x11071f });
+      const ground = new THREE.Mesh(groundGeo, groundMat);
+      ground.position.y = -0.2;
+      templeGroup.add(ground);
+
+      scene.add(templeGroup);
+    }
+
+    // =========================================================
+    // CLOUD UNVEIL LOGIC
+    // =========================================================
+    function unveilSanctum() {
+      if (isParted) return;
+      isParted = true;
+
+      // Part clouds
+      const curtain = document.getElementById("cloud-curtain");
+      curtain.classList.add("parted");
+      document.getElementById("prompt-box").style.opacity = "0";
+
+      // Camera gently moves closer
+      let startZ = camera.position.z;
+      let targetZ = 38;
+      let step = 0;
+      const zoomInterval = setInterval(() => {
+        step += 0.03;
+        camera.position.z = startZ + (targetZ - startZ) * step;
+        if (step >= 1) clearInterval(zoomInterval);
+      }, 16);
+
+      // 2 Seconds Later: Lantern Ignites
+      setTimeout(() => {
+        let intensity = 0.2;
+        const lightTimer = setInterval(() => {
+          intensity += 0.1;
+          lanternLight.intensity = intensity;
+          if (intensity >= 1.8) clearInterval(lightTimer);
+        }, 40);
+      }, 2000);
+    }
+
+    // =========================================================
+    // INTERACTION & RAYCASTING
+    // =========================================================
+    function setupInteractions() {
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      // Drag to rotate temple
+      window.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        previousMouseX = e.clientX;
+        previousMouseY = e.clientY;
+      });
+
+      window.addEventListener("mouseup", () => { isDragging = false; });
+
+      window.addEventListener("mousemove", (e) => {
+        if (!isDragging || !templeGroup) return;
+        const deltaX = e.clientX - previousMouseX;
+        const deltaY = e.clientY - previousMouseY;
+
+        templeGroup.rotation.y += deltaX * 0.008;
+        previousMouseX = e.clientX;
+        previousMouseY = e.clientY;
+      });
+
+      // Click to trigger hotspot details
+      window.addEventListener("click", (e) => {
+        if (!isParted || e.target.closest("#mystery-drawer") || e.target.closest(".hint-legend") || e.target.closest("header")) return;
+
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects([flagMesh, kitchenMesh, gateMesh], true);
+
+        if (intersects.length > 0) {
+          let hit = intersects[0].object;
+          while (hit.parent && !hit.name) {
+            hit = hit.parent;
+          }
+          if (hit.name) {
+            focusTarget(hit.name);
+          }
+        }
+      });
+
+      // Scroll to sink temple into mist
+      let scrollOffset = 0;
+      window.addEventListener("wheel", (e) => {
+        if (!isParted) return;
+        scrollOffset += e.deltaY * 0.02;
+        scrollOffset = Math.max(0, Math.min(30, scrollOffset));
+        if (templeGroup) {
+          templeGroup.position.y = -scrollOffset;
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // Open slide-out drawer with selected artifact data
+    function focusTarget(key) {
+      if (!SANCTUM_MYSTERIES[key]) return;
+      unveilSanctum();
+
+      const data = SANCTUM_MYSTERIES[key];
+      const drawer = document.getElementById("mystery-drawer");
+      const badge = document.getElementById("drawer-badge");
+
+      badge.className = `drawer-badge ${data.badge}`;
+      badge.textContent = data.badgeText;
+      document.getElementById("drawer-title").textContent = data.title;
+      document.getElementById("drawer-prose").textContent = data.prose;
+      document.getElementById("drawer-tradition").textContent = data.tradition;
+      document.getElementById("drawer-science").textContent = data.science;
+
+      drawer.classList.add("open");
+
+      // Rotate temple so the clicked artifact faces front
+      if (key === "flag") templeGroup.rotation.y = 0;
+      if (key === "prasad") templeGroup.rotation.y = Math.PI / 2.5;
+      if (key === "gate") templeGroup.rotation.y = -Math.PI / 1.2;
+    }
+
+    function closeDrawer() {
+      document.getElementById("mystery-drawer").classList.remove("open");
+    }
+
+    // Continuous Animation Loop
+    let clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const t = clock.getElapsedTime();
+
+      // Flag wave simulation
+      if (flagMesh && flagMesh.geometry) {
+        const pos = flagMesh.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const vx = pos.getX(i);
+          pos.setZ(i, Math.sin(vx * 2.5 + t * 5) * 0.2);
+        }
+        flagMesh.geometry.attributes.position.needsUpdate = true;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
