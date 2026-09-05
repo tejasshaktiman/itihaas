@@ -388,7 +388,7 @@
     }
 
     .milestone-item:hover .milestone-drawer-details {
-      max-height: 80px;
+      max-height: 120px;
       opacity: 1;
       margin-top: 8px;
       padding-top: 6px;
@@ -399,7 +399,6 @@
       margin: 0;
     }
 
-    /* CENTERED BOTTOM ROLEPLAY BUTTON */
     .roleplay-action-dock {
       position: absolute;
       bottom: 14px;
@@ -458,8 +457,8 @@
         </div>
 
         <div class="story-content-body">
-          <div class="story-event-year" id="display-event-year">Year</div>
-          <h1 class="story-event-title" id="display-event-title">Milestone Title</h1>
+          <div class="story-event-year" id="display-event-year">--</div>
+          <h1 class="story-event-title" id="display-event-title">Loading...</h1>
           <div class="stream-text-terminal" id="typewriter-stream"></div>
         </div>
       </div>
@@ -467,9 +466,9 @@
       <div class="story-footer-interactive">
         <span class="interactive-label">Contextual Inquiries (Ask History)</span>
         <div class="context-pill-group">
-          <button class="context-pill" onclick="promptFollowUp('Why did this happen?')">💬 Why did this happen?</button>
-          <button class="context-pill" onclick="promptFollowUp('Tactical Significance')">💬 Tactical Significance</button>
-          <button class="context-pill" onclick="promptFollowUp('Long-term Consequences')">💬 Long-term Consequences</button>
+          <button class="context-pill" onclick="promptFollowUp('Causes')">💬 Why did this happen?</button>
+          <button class="context-pill" onclick="promptFollowUp('Strategy')">💬 Tactical Significance</button>
+          <button class="context-pill" onclick="promptFollowUp('Consequences')">💬 Long-term Consequences</button>
         </div>
       </div>
     </div>
@@ -477,7 +476,7 @@
     <!-- RIGHT PANEL: Chronological Timeline -->
     <div class="right-timeline-panel">
       <div class="timeline-panel-header">
-        <h2 id="timeline-header-title">Timeline</h2>
+        <h2 id="timeline-header-title">Historical Timeline</h2>
         <span>Hover for details • Click to stream story</span>
       </div>
 
@@ -486,7 +485,6 @@
         <div id="milestones-container"></div>
       </div>
 
-      <!-- Centered Roleplay Launch Button -->
       <div class="roleplay-action-dock">
         <button class="btn-start-roleplay" onclick="launchRoleplayModal()">
           ⚡ START HISTORICAL ROLEPLAY
@@ -496,314 +494,40 @@
 
   </div>
 
+  <!-- LOAD THE CENTRAL DATA FILE DIRECTLY -->
+  <script src="allHistoryData.js"></script>
+
   <script>
-    // COMPLETE DATA DICTIONARY FOR TOP EMPIRES & TOPICS FROM REVISION PDF
-    const TOPIC_DATABASE = {
-      // 1. MAURYA EMPIRE
-      "maurya-empire": {
-        title: "Maurya Empire (c. 322–185 BCE)",
-        events: [
-          {
-            id: "322bce",
-            year: "322 BCE",
-            title: "Chandragupta Maurya Establishes Empire",
-            brief: "Chandragupta overthrows the Nanda dynasty, founding the imperial line.",
-            details: ["• Overthrew the Nanda dynasty at Magadha", "• Guided by Chanakya (Kautilya)", "• Established centralized administrative network"],
-            fullStory: "In 322 BCE, Chandragupta Maurya, supported by the statecraft mentor Chanakya, unseated the corrupt Nanda dynasty of Magadha.\n\nEstablishing his capital at Pataliputra, Chandragupta consolidated armed forces across northern India, turning a regional kingdom into the subcontinent's first major continental empire."
-          },
-          {
-            id: "305bce",
-            year: "c. 305 BCE",
-            title: "Seleucid-Mauryan Treaty",
-            brief: "Chandragupta fights Seleucus I; treaty secures control in northwest.",
-            details: ["• Ceded Arachosia, Gedrosia, and Gandhara", "• Mauryan alliance sealed with 500 war elephants", "• Megasthenes sent as Greek ambassador"],
-            fullStory: "Seleucus I Nicator led Macedonian forces east across the Indus to reclaim Alexander's lost satrapies.\n\nChandragupta met Seleucus with a massive coordinated infantry and elephant corps. Rather than prolonged war, both rulers signed an alliance: Seleucus ceded regions of eastern Afghanistan and Balochistan in return for 500 Mauryan war elephants and Greek diplomat Megasthenes visiting Pataliputra."
-          },
-          {
-            id: "268bce",
-            year: "c. 268 BCE",
-            title: "Ashoka Ascends the Throne",
-            brief: "Ashoka becomes third Mauryan emperor after succession struggle.",
-            details: ["• Inherited empire stretching from Afghanistan to Bengal", "• Expansionist administrative apparatus", "• Peak geopolitical boundaries of early India"],
-            fullStory: "Ashoka succeeded Bindusara around 268 BCE. Ruling from Pataliputra, his early reign focused on administrative centralization, garrison garrisons across borderlands, and securing international sea routes along the Bay of Bengal."
-          },
-          {
-            id: "261bce",
-            year: "c. 261 BCE",
-            title: "The Kalinga War & Transformation",
-            brief: "Conquest of Kalinga results in immense bloodshed; Ashoka turns to Dhamma.",
-            details: ["• Over 100,000 casualties and 150,000 deportations", "• Monumental remorse recorded in Rock Edict XIII", "• Shift from Digvijaya (military conquest) to Dhammavijaya"],
-            fullStory: "Seeking naval access on the eastern coast, Ashoka attacked the independent republic of Kalinga.\n\nThe resulting carnage was catastrophic: over one hundred thousand soldiers perished. Stricken by remorse while walking through the devastated warfields, Ashoka renounced aggressive warfare and embraced Buddhist principles of non-violence and ethical governance."
-          },
-          {
-            id: "185bce",
-            year: "185 BCE",
-            title: "Fall of the Mauryan Empire",
-            brief: "Last ruler Brihadratha is assassinated by Pushyamitra Shunga.",
-            details: ["• Military coup during armed review", "• Rise of the Shunga dynasty in Magadha", "• Regional fragmentation across the Deccan"],
-            fullStory: "After Ashoka's successors struggled with territorial governance and fiscal strains, commander-in-chief Pushyamitra Shunga assassinated the last Mauryan emperor Brihadratha during a military inspection in 185 BCE, concluding Mauryan sovereignty."
-          }
-        ]
-      },
-
-      // 2. GUPTA EMPIRE
-      "gupta-empire": {
-        title: "Gupta Empire (c. 320–550 CE)",
-        events: [
-          {
-            id: "320ce",
-            year: "c. 320 CE",
-            title: "Chandragupta I Founds Imperial Phase",
-            brief: "Starts the Gupta calendar and cements royal marriage with the Licchavis.",
-            details: ["• Assumed title 'Maharajadhiraja'", "• Matrimonial alliance with Licchavi princess Kumaradevi", "• Secured Ganga heartland"],
-            fullStory: "Chandragupta I revived central authority in the Gangetic plains by marrying Kumaradevi, a princess of the prestigious Licchavi clan. This alliance provided military and political legitimacy, initiating the classical Gupta imperial phase."
-          },
-          {
-            id: "335ce",
-            year: "c. 335–375 CE",
-            title: "Samudragupta's Digvijaya Campaigns",
-            brief: "Expands Gupta sway from Punjab to the Deccan borders.",
-            details: ["• Allahabad Pillar inscription by court poet Harisena", "• Subjugated nine northern kings directly", "• Extracting tribute from twelve southern rulers"],
-            fullStory: "Known as the 'Napoleon of India,' Samudragupta was both a warrior and poet. His military campaigns swept across northern India and deep down the eastern coast to Kanchipuram, turning northern rulers into direct subjects and southern monarchs into tributary allies."
-          },
-          {
-            id: "375ce",
-            year: "c. 375–415 CE",
-            title: "Chandragupta II (Vikramaditya) & Golden Age",
-            brief: "Annihilates Western Kshatrapas; arts, literature, and trade peak.",
-            details: ["• Conquered ports of Gujarat for maritime trade", "• Patronage of Navaratnas (including Kalidasa)", "• Chinese traveler Faxian records prosperity"],
-            fullStory: "Under Chandragupta Vikramaditya, the Gupta empire reached its zenith. Defeating the Saka rulers of Western India, he connected the empire to Arabian Sea trade routes. Literature, mathematics (Aryabhata), and sculpture blossomed into what historians call India's Classical Golden Age."
-          },
-          {
-            id: "500ce",
-            year: "5th–6th Cent.",
-            title: "Huna Invasions & Empire Decline",
-            brief: "Toramana and Mihirakula's invasions drain treasuries.",
-            details: ["• Repeated incursions through northwestern passes", "• Skandagupta's costly defense victories", "• Disintegration into regional feudal states"],
-            fullStory: "Repeated waves of Hephthalite (Huna) invasions through the Hindu Kush breached the northwest frontiers. While Skandagupta initially repelled them, the immense defense expenditures depleted the imperial treasury, leaving later Guptas vulnerable to regional revolts."
-          }
-        ]
-      },
-
-      // 3. CHOLA EMPIRE
-      "chola-empire": {
-        title: "Imperial Chola Dynasty (c. 850–1279 CE)",
-        events: [
-          {
-            id: "850ce",
-            year: "c. 850 CE",
-            title: "Vijayalaya Captures Thanjavur",
-            brief: "Lays the foundation of the Imperial Chola line.",
-            details: ["• Captured Thanjavur from the Muttaraiyars", "• Dedicated temple to Goddess Nishumbhasudani", "• Revived Chola authority in Kaveri basin"],
-            fullStory: "Vijayalaya Chola, emerging from the shadows of Pallava and Pandya rivalry, seized Thanjavur in the fertile Kaveri delta, converting it into the administrative citadel of the reborn Chola lineage."
-          },
-          {
-            id: "985ce",
-            year: "985–1014 CE",
-            title: "Rajaraja Chola I & Brihadisvara Temple",
-            brief: "Builds naval supremacy, conducts land surveys, and erects the Thanjavur temple.",
-            details: ["• Constructed colossal granite Brihadisvara Temple", "• Conquered northern Sri Lanka (Anuradhapura)", "• Structured local self-governing village sabhas"],
-            fullStory: "Rajaraja I revolutionized administrative statecraft with cadastral land revenue surveys and democratic village assemblies. He built a navy that brought northern Sri Lanka and the Maldives under Chola rule, celebrating his victories with the towering granite Brihadisvara Temple."
-          },
-          {
-            id: "1014ce",
-            year: "1014–1044 CE",
-            title: "Rajendra I & Srivijaya Naval Armada",
-            brief: "Marches to the Ganga and launches maritime raid against Sumatra/Malaya.",
-            details: ["• Assumed title 'Gangaikonda Chola'", "• Built new capital Gangaikondacholapuram", "• Defeated Srivijaya maritime empire in Southeast Asia"],
-            fullStory: "Rajendra Chola I expanded Chola naval power far beyond the subcontinent. He led an army north to the banks of the Ganges, then dispatched the Chola fleet across the Bay of Bengal to conquer Srivijaya ports across modern-day Indonesia and Malaysia, dominating Indian Ocean commerce."
-          },
-          {
-            id: "1279ce",
-            year: "1279 CE",
-            title: "Pandya Resurgence & Chola Sunset",
-            brief: "Maravarman Kulasekara Pandya I ends Chola sovereignty.",
-            details: ["• Battle victories of the Second Pandya Empire", "• Fragmentation of Kaveri core territories", "• Absorption into southern regional powers"],
-            fullStory: "After over four centuries of naval and cultural leadership, growing pressure from Hoysalas and the resurgent Pandyas weakened the central throne. In 1279 CE, Rajendra Chola III was defeated by Maravarman Kulasekara Pandya, concluding imperial Chola authority."
-          }
-        ]
-      },
-
-      // 4. DELHI SULTANATE
-      "delhi-sultanate": {
-        title: "Delhi Sultanate (1206–1526 CE)",
-        events: [
-          {
-            id: "1206ce",
-            year: "1206 CE",
-            title: "Qutb-ud-din Aibak Founds Sultanate",
-            brief: "Establishes Mamluk rule and commissions the Qutb Minar.",
-            details: ["• Broke away from Ghurid Afghan control", "• Crowned at Lahore, later centered at Delhi", "• Laid foundation of the Quwwat-ul-Islam mosque"],
-            fullStory: "Following the assassination of Muhammad Ghori, his Turkish commander Qutb-ud-din Aibak declared independence, establishing the Mamluk (Slave) dynasty and founding the Sultanate of Delhi."
-          },
-          {
-            id: "1236ce",
-            year: "1236 CE",
-            title: "Razia Sultan Ascends the Throne",
-            brief: "First female Muslim monarch of the Delhi Sultanate.",
-            details: ["• Chosen over brothers by Iltutmish on merit", "• Shed purdah, led armies on horseback", "• Defied conservative Turkish nobility (The Forty)"],
-            fullStory: "Sultan Iltutmish appointed his competent daughter Razia as his successor over his sons. Razia governed without the veil, presided over open durbar, and led military expeditions, confronting patriarchal rebellions led by the Turkish nobility."
-          },
-          {
-            id: "1296ce",
-            year: "1296–1316 CE",
-            title: "Alauddin Khalji's Expansion & Market Reforms",
-            brief: "Repels Mongol invasions and commands campaigns into South India.",
-            details: ["• Fixed grain prices and strict market surveillance", "• Malik Kafur's campaigns to Devagiri, Warangal, Madurai", "• Defeated multiple Chagatai Mongol assaults"],
-            fullStory: "Alauddin Khalji instituted state market controls to support a large standing army. His general Malik Kafur conquered southern kingdoms, gathering gold tributes while Khalji's fortifications repelled Mongol sieges of Delhi."
-          },
-          {
-            id: "1327ce",
-            year: "1327 CE",
-            title: "Muhammad bin Tughlaq Transfers Capital",
-            brief: "Orders shift from Delhi to Daulatabad to manage the Deccan.",
-            details: ["• Forced relocation of imperial court and populace", "• Replaced gold/silver with token brass currency", "• Reversed decision due to southern water and border issues"],
-            fullStory: "Seeking a central capital to command northern and southern provinces, Muhammad bin Tughlaq ordered the transfer of Delhi's citizens 700 miles south to Daulatabad (Devagiri). Logistical hardships, deaths en route, and unprotected northern borders forced a return to Delhi."
-          },
-          {
-            id: "1526ce",
-            year: "1526 CE",
-            title: "First Battle of Panipat",
-            brief: "Babur defeats Ibrahim Lodi; end of the Delhi Sultanate.",
-            details: ["• Field artillery and matchlocks introduced", "• Fall of the Lodi Afghan dynasty", "• Beginning of the Mughal Empire"],
-            fullStory: "On 21 April 1526, Babur's disciplined army met Ibrahim Lodi's forces at Panipat. Utilizing gunpowder artillery carts and flanking cavalry, Babur shattered the Sultanate lines, ending 320 years of Delhi Sultanate rule."
-          }
-        ]
-      },
-
-      // 5. VIJAYANAGARA EMPIRE
-      "vijayanagara-empire": {
-        title: "Vijayanagara Empire (1336–1646 CE)",
-        events: [
-          {
-            id: "1336ce",
-            year: "1336 CE",
-            title: "Harihara I & Bukka Raya I Found Empire",
-            brief: "Sangama brothers establish Hampi on the Tungabhadra river.",
-            details: ["• Guided by sage Vidyaranya of Sringeri", "• Formed to defend southern culture and kingdoms", "• Chose impregnable boulder hills of Hampi"],
-            fullStory: "Brothers Harihara and Bukka Raya broke away from the Tughlaq sultanate, founding the Sangama dynasty on the banks of the Tungabhadra River. The city of Vijayanagara ('City of Victory') expanded to shelter southern kingdoms."
-          },
-          {
-            id: "1509ce",
-            year: "1509–1529 CE",
-            title: "Krishnadevaraya's Zenith Reign",
-            brief: "Tuluva ruler oversees peak military, trade, and literary greatness.",
-            details: ["• Defeated Gajapatis of Odisha and Adil Shah of Bijapur", "• Flourishing Portuguese horse trade through Goa", "• Author of Telugu epic poem Amuktamalyada"],
-            fullStory: "Krishnadevaraya's reign represented the peak of Vijayanagara. Portuguese travelers Domingo Paes and Duarte Barbosa marveled at the city's diamond markets, water systems, and temple architecture while the royal army expanded frontiers across South India."
-          },
-          {
-            id: "1565ce",
-            year: "1565 CE",
-            title: "Battle of Talikota & Sack of Hampi",
-            brief: "Allied Deccan Sultanates defeat Vijayanagara; Hampi devastated.",
-            details: ["• Combined forces of Bijapur, Golconda, Ahmadnagar, Bidar", "• Artillery fire and defection of key commander divisions", "• Devastation of the capital city Hampi"],
-            fullStory: "The Deccan Sultanates united to face regent Aliya Rama Raya at Talikota. Coordinated swivel artillery and battlefield defections routed the Vijayanagara lines. The capital of Hampi was abandoned and ruined over subsequent months."
-          }
-        ]
-      },
-
-      // 6. MUGHAL EMPIRE
-      "mughal-empire": {
-        title: "Mughal Empire (1526–1857 CE)",
-        events: [
-          {
-            id: "1526mughal",
-            year: "1526 CE",
-            title: "First Battle of Panipat",
-            brief: "Babur defeats Ibrahim Lodi and founds Mughal authority.",
-            details: ["• Matchlocks and Ottoman cart formations", "• Established Babur in Delhi and Agra", "• Foundation of Mughal line"],
-            fullStory: "Babur's tactical victory over Ibrahim Lodi at Panipat on 21 April 1526 introduced field artillery to northern India and laid the foundations of the Mughal state."
-          },
-          {
-            id: "1556mughal",
-            year: "1556 CE",
-            title: "Second Battle of Panipat",
-            brief: "Young Akbar and Bairam Khan defeat Hemu.",
-            details: ["• Overcame Hemu's war elephant army", "• Reclaimed Agra and Delhi", "• Began Akbar's 49-year reign"],
-            fullStory: "Following Humayun's death, thirteen-year-old Akbar and regent Bairam Khan faced Hemu at Panipat. An arrow striking Hemu created confusion in his lines, allowing Mughal forces to secure northern India."
-          },
-          {
-            id: "1632mughal",
-            year: "1632 CE",
-            title: "Shah Jahan & The Taj Mahal",
-            brief: "Commission of the white marble mausoleum at Agra.",
-            details: ["• Built in memory of Mumtaz Mahal", "• Peak of Mughal classical balance and Pietra Dura", "• Massive architectural expenditure"],
-            fullStory: "Shah Jahan's reign was characterized by monumental architecture. The Taj Mahal at Agra became the pinnacle of Indo-Islamic symmetry and craftsmanship, completed by artisans from across Asia."
-          },
-          {
-            id: "1658mughal",
-            year: "1658 CE",
-            title: "Aurangzeb's Accession",
-            brief: "Aurangzeb wins the War of Succession against Dara Shikoh.",
-            details: ["• Victory at the Battle of Samugarh", "• Imprisonment of Shah Jahan at Agra Fort", "• Launch of 25-year southern Deccan wars"],
-            fullStory: "After defeating elder brother Dara Shikoh at Samugarh, Aurangzeb claimed the Peacock Throne. His reign pushed the empire's boundaries to their greatest geographic extent, though prolonged southern wars strained imperial resources."
-          },
-          {
-            id: "1857mughal",
-            year: "1857 CE",
-            title: "1857 Uprising & End of Dynasty",
-            brief: "British forces exile Bahadur Shah Zafar, ending the dynasty.",
-            details: ["• Sepoys proclaim Bahadur Shah emperor", "• Fall of Delhi after four-month British siege", "• British Crown assumes direct sovereignty"],
-            fullStory: "During the 1857 Rebellion, Bahadur Shah Zafar was proclaimed the symbolic sovereign of resistance. Following the siege of Delhi by British troops, Zafar was captured and exiled to Burma, formally ending the dynasty."
-          }
-        ]
-      },
-
-      // 7. MARATHA EMPIRE
-      "maratha-empire": {
-        title: "Maratha Empire (1674–1818 CE)",
-        events: [
-          {
-            id: "1674maratha",
-            year: "1674 CE",
-            title: "Shivaji Crowned Chhatrapati at Raigad",
-            brief: "Formal establishment of Hindavi Swarajya.",
-            details: ["• Coronated by scholar Gaga Bhatt", "• Built naval armada and Sahyadri fort network", "• Established Ashta Pradhan administrative council"],
-            fullStory: "On 6 June 1674, Shivaji was crowned Chhatrapati at Raigad hill fort, establishing a sovereign Hindu state in western India and institutionalizing the Ashta Pradhan governance system."
-          },
-          {
-            id: "1707maratha",
-            year: "1707 CE",
-            title: "Post-Aurangzeb Maratha Surge",
-            brief: "Release of Shahu and the rise of the Peshwaship.",
-            details: ["• Expansion of Maratha authority into Malwa and Gujarat", "• Under Baji Rao I, cavalry crossed the Narmada", "• Transformation into a subcontinent-wide confederacy"],
-            fullStory: "Following the death of Aurangzeb, Maratha forces pushed out of the Deccan. Under Peshwa Baji Rao I, Maratha cavalry crossed the Narmada, establishing authority over Malwa, Bundelkhand, and Gujarat."
-          },
-          {
-            id: "1761maratha",
-            year: "1761 CE",
-            title: "Third Battle of Panipat",
-            brief: "Ahmad Shah Abdali defeats the Maratha army.",
-            details: ["• Sadashivrao Bhau and Vishwasrao killed in combat", "• Heavy losses among Maratha leadership", "• Checked further northwest expansion"],
-            fullStory: "On 14 January 1761, the Maratha army under Sadashivrao Bhau met the Afghan forces of Ahmad Shah Abdali at Panipat. Severe casualties halted immediate Maratha northward expansion and fragmented the confederacy into regional houses (Scindia, Holkar, Gaekwad)."
-          },
-          {
-            id: "1818maratha",
-            year: "1818 CE",
-            title: "Third Anglo-Maratha War & Sunset",
-            brief: "Peshwa Baji Rao II surrenders to the British East India Company.",
-            details: ["• Defeats at Khadki, Koregaon, and Ashti", "• Abolition of the office of the Peshwa", "• Company gains dominance over central and western India"],
-            fullStory: "The Third Anglo-Maratha War concluded Maratha supremacy. After defeats in 1817–1818, Peshwa Baji Rao II surrendered, the Peshwa office was abolished, and the British East India Company secured control over central and western India."
-          }
-        ]
-      }
-    };
-
-    let activeTopicKey = "mughal-empire";
+    let activeTopicKey = "";
     let activeEventId = "";
     let typewriterTimer = null;
 
+    // Bulletproof URL parameter reader
     function getTopicFromURL() {
       const urlParams = new URLSearchParams(window.location.search);
-      const topicParam = urlParams.get("topic");
-      if (topicParam && TOPIC_DATABASE[topicParam]) {
-        return topicParam;
+      const requestedTopic = urlParams.get("topic");
+      const requestedEra = urlParams.get("era");
+
+      // 1. Direct topic match
+      if (requestedTopic && typeof ALL_HISTORY_DATA !== 'undefined' && ALL_HISTORY_DATA[requestedTopic]) {
+        return requestedTopic;
       }
-      return "mughal-empire";
+
+      // 2. Era-aware fallback (prevents Modern history from loading Panipat/Mughal!)
+      if (requestedEra === "modern") return "east-india-company";
+      if (requestedEra === "ancient") return "maurya-empire";
+      if (requestedEra === "medieval") return "chola-empire";
+
+      // 3. Absolute default
+      return "east-india-company";
     }
 
-    function typeTextSmooth(element, text, speed = 12) {
-      if (typewriterTimer) clearInterval(typewriterTimer);
+    // Typewriter engine with interval clearing
+    function typeTextSmooth(element, text, speed = 8) {
+      if (typewriterTimer) {
+        clearInterval(typewriterTimer);
+        typewriterTimer = null;
+      }
       element.textContent = "";
       let index = 0;
 
@@ -824,7 +548,9 @@
 
     function selectMilestone(id) {
       activeEventId = id;
-      const topicData = TOPIC_DATABASE[activeTopicKey];
+      const topicData = ALL_HISTORY_DATA[activeTopicKey];
+      if (!topicData) return;
+
       const target = topicData.events.find(item => item.id === id);
       if (!target) return;
 
@@ -832,7 +558,7 @@
       document.getElementById("display-event-title").textContent = target.title;
 
       const streamContainer = document.getElementById("typewriter-stream");
-      typeTextSmooth(streamContainer, target.fullStory, 12);
+      typeTextSmooth(streamContainer, target.fullStory, 8);
 
       const items = document.querySelectorAll(".milestone-item");
       items.forEach(el => {
@@ -842,7 +568,14 @@
 
     function loadTopicTimeline(topicKey) {
       activeTopicKey = topicKey;
-      const topicData = TOPIC_DATABASE[topicKey] || TOPIC_DATABASE["mughal-empire"];
+      const topicData = ALL_HISTORY_DATA[topicKey];
+
+      if (!topicData) {
+        document.getElementById("timeline-header-title").textContent = "Section Not Found";
+        document.getElementById("display-event-title").textContent = `Topic "${topicKey}" not found`;
+        document.getElementById("typewriter-stream").textContent = "Please return to Universe Hub and select an era.";
+        return;
+      }
 
       document.getElementById("timeline-header-title").textContent = topicData.title;
       document.getElementById("display-topic-name").textContent = topicData.title.split("(")[0].trim();
@@ -879,30 +612,30 @@
     }
 
     function launchRoleplayModal() {
-      const topicData = TOPIC_DATABASE[activeTopicKey];
+      const topicData = ALL_HISTORY_DATA[activeTopicKey];
       const current = topicData.events.find(item => item.id === activeEventId);
       alert(
         `⚡ LAUNCHING HISTORICAL ROLEPLAY ⚡\n\n` +
-        `Setting: ${topicData.title}\n` +
+        `Era / Empire: ${topicData.title}\n` +
         `Milestone: ${current.year} — ${current.title}\n\n` +
-        `Context: You are commanding key choices in this historical moment!`
+        `Context: You are commanding this critical historical juncture!`
       );
     }
 
     function promptFollowUp(questionType) {
       const streamContainer = document.getElementById("typewriter-stream");
-      const topicData = TOPIC_DATABASE[activeTopicKey];
+      const topicData = ALL_HISTORY_DATA[activeTopicKey];
       const current = topicData.events.find(item => item.id === activeEventId);
 
       const followUpText = `\n\n[CURATED AI CONTEXT — ${questionType.toUpperCase()}]:\n` +
-        `Regarding ${current.title} in ${current.year}: Primary historical records show this development had lasting political, administrative, and economic impacts on the region.`;
+        `Regarding ${current.title} in ${current.year}: Primary records show this event significantly influenced subsequent political, economic, and military alignments.`;
       
-      typeTextSmooth(streamContainer, streamContainer.textContent + followUpText, 10);
+      typeTextSmooth(streamContainer, streamContainer.textContent + followUpText, 6);
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      const detectedTopic = getTopicFromURL();
-      loadTopicTimeline(detectedTopic);
+      const topic = getTopicFromURL();
+      loadTopicTimeline(topic);
     });
   </script>
 </body>
