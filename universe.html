@@ -16,7 +16,7 @@
 
     :root {
       --bg-dark: #060911;
-      --surface-glass: rgba(12, 18, 32, 0.88);
+      --surface-glass: rgba(12, 18, 32, 0.9);
       --border-subtle: #1e293b;
       
       --amber-500: #f59e0b;
@@ -44,7 +44,7 @@
       flex-direction: column;
       user-select: none;
       background-image: 
-        radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.09) 0%, transparent 62%),
         radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
     }
 
@@ -133,7 +133,7 @@
        ========================================================= */
     .hud-bar {
       width: 100%;
-      padding: 12px 20px 0 20px;
+      padding: 10px 20px 0 20px;
       text-align: center;
       position: relative;
       z-index: 10;
@@ -152,7 +152,7 @@
       border: 1px solid rgba(245, 158, 11, 0.3);
       padding: 3px 12px;
       border-radius: 20px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .hud-instruction {
@@ -167,7 +167,7 @@
     }
 
     /* =========================================================
-       4. RADIAL SVG UNIVERSE CANVAS
+       4. RADIAL SVG CANVAS
        ========================================================= */
     .viewport-universe {
       flex: 1;
@@ -179,8 +179,8 @@
     }
 
     svg#universe-svg {
-      width: 760px;
-      height: 760px;
+      width: 820px;
+      height: 820px;
       max-width: 95vw;
       max-height: 84vh;
       overflow: visible;
@@ -191,8 +191,8 @@
       stroke: #1e293b;
       stroke-width: 1.2;
       stroke-dasharray: 4, 8;
-      animation: spinClockwise 100s linear infinite;
-      transform-origin: 400px 400px;
+      animation: spinClockwise 110s linear infinite;
+      transform-origin: 430px 430px;
     }
 
     .orbit-guide-inner {
@@ -209,7 +209,7 @@
     /* Center Circle Disc */
     .center-disc {
       cursor: pointer;
-      transform-origin: 400px 400px;
+      transform-origin: 430px 430px;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
     }
 
@@ -223,17 +223,17 @@
     }
 
     .center-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
       letter-spacing: 0.08em;
       fill: #ffffff;
       text-anchor: middle;
       pointer-events: none;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
     }
 
     .center-subtitle {
-      font-size: 9px;
+      font-size: 9.5px;
       font-weight: 800;
       letter-spacing: 0.16em;
       fill: #fde68a;
@@ -245,23 +245,34 @@
     /* Radial Arc Segments */
     .arc-group {
       cursor: pointer;
-      transform-origin: 400px 400px;
+      transform-origin: 430px 430px;
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
     }
 
     .arc-group:hover {
-      filter: brightness(1.22) drop-shadow(0 0 16px rgba(245, 158, 11, 0.5));
+      filter: brightness(1.2) drop-shadow(0 0 18px rgba(245, 158, 11, 0.5));
     }
 
-    /* Curved Text Styling */
-    .arc-label {
-      font-size: 11.5px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
+    /* Primary curved label */
+    .arc-label-line1 {
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
       fill: #ffffff;
       text-transform: uppercase;
       pointer-events: none;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9);
+    }
+
+    /* Secondary sub-label */
+    .arc-label-line2 {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      fill: #fef08a;
+      text-transform: uppercase;
+      pointer-events: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9);
     }
 
     /* =========================================================
@@ -269,7 +280,7 @@
        ========================================================= */
     .bottom-bar {
       position: absolute;
-      bottom: 18px;
+      bottom: 16px;
       display: flex;
       gap: 12px;
       align-items: center;
@@ -315,16 +326,15 @@
   <div class="hud-bar">
     <div class="hud-badge" id="hud-badge">LEVEL 0 • CIVILIZATIONAL ORIGIN</div>
     <div class="hud-instruction" id="hud-text">
-      Click the central <strong>"INDIAN HISTORY"</strong> circle to split history into its 3 major epochs[cite: 1, 2, 3].
+      Click the central <strong>"INDIAN HISTORY"</strong> circle to split history into its 3 major epochs.
     </div>
   </div>
 
   <!-- ================= 3. RADIAL UNIVERSE ================= -->
   <div class="viewport-universe">
-    <!-- Center coordinate is (400, 400) inside an 800x800 coordinate frame -->
-    <svg id="universe-svg" viewBox="0 0 800 800">
+    <!-- Center coordinate is (430, 430) inside an 860x860 space -->
+    <svg id="universe-svg" viewBox="0 0 860 860">
       <defs>
-        <!-- Gradients -->
         <radialGradient id="center-core-grad" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stop-color="#b45309" />
           <stop offset="65%" stop-color="#78350f" />
@@ -347,34 +357,34 @@
         </linearGradient>
       </defs>
 
-      <!-- Decorative guide orbits -->
-      <circle cx="400" cy="400" r="340" class="orbit-guide-outer" />
-      <circle cx="400" cy="400" r="230" class="orbit-guide-inner" />
+      <!-- Background decorative rings -->
+      <circle cx="430" cy="430" r="390" class="orbit-guide-outer" />
+      <circle cx="430" cy="430" r="260" class="orbit-guide-inner" />
 
-      <!-- LAYER WHERE DYNAMIC ARCS ARE INJECTED -->
+      <!-- LAYER WHERE EXPANDED ARCS APPEAR -->
       <g id="arcs-container"></g>
 
-      <!-- CENTER DISC (Radius 92) -->
+      <!-- CENTER DISC (Radius 102) -->
       <g id="center-disc" class="center-disc" onclick="handleCenterCircleClick()">
-        <circle cx="400" cy="400" r="92" fill="url(#center-core-grad)" stroke="#f59e0b" stroke-width="2.5" />
-        <circle cx="400" cy="400" r="85" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-dasharray="3, 4" />
+        <circle cx="430" cy="430" r="102" fill="url(#center-core-grad)" stroke="#f59e0b" stroke-width="2.5" />
+        <circle cx="430" cy="430" r="95" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2" stroke-dasharray="3, 4" />
         
-        <text x="400" y="393" class="center-subtitle" id="center-sub-label">CLICK TO UNVEIL</text>
-        <text x="400" y="413" class="center-title" id="center-main-label">INDIAN HISTORY</text>
+        <text x="430" y="423" class="center-subtitle" id="center-sub-label">CLICK TO UNVEIL</text>
+        <text x="430" y="444" class="center-title" id="center-main-label">INDIAN HISTORY</text>
       </g>
     </svg>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Controls -->
     <div class="bottom-bar">
       <button class="action-btn" id="tier-back-btn" style="display:none;" onclick="openLevelOneEras()">← Back to 3 Eras</button>
       <button class="action-btn" onclick="resetToBeginning()">↺ Reset to Central Hub</button>
     </div>
   </div>
 
-  <!-- ================= 4. JAVASCRIPT UNIVERSE ENGINE ================= -->
+  <!-- ================= 4. UNIVERSE ENGINE ================= -->
   <script>
-    const CX = 400;
-    const CY = 400;
+    const CX = 430;
+    const CY = 430;
 
     let currentLevel = 0;
     let selectedEraId = null;
@@ -413,7 +423,7 @@
       }
     ];
 
-    // LEVEL 2: 7 Headings with Clean Two-Line Text Splitting
+    // LEVEL 2: Exact 7 Headings with Line 1 & Line 2 Clean Pairing
     const ERA_SECTIONS = {
       ancient: {
         title: 'ANCIENT HISTORY',
@@ -511,9 +521,8 @@
       document.getElementById('hud-text').innerHTML = 'Click any era (<strong>Ancient</strong>, <strong>Medieval</strong>, or <strong>Modern</strong>) to explore its 7 pillars.';
       document.getElementById('tier-back-btn').style.display = 'none';
 
-      // Broad, comfortable ring for 3 eras
-      const innerRadius = 110;
-      const outerRadius = 220;
+      const innerRadius = 120;
+      const outerRadius = 245;
       const textRadius = (innerRadius + outerRadius) / 2 + 5;
 
       LEVEL_1_ERAS.forEach((era, idx) => {
@@ -532,7 +541,7 @@
         g.innerHTML = `
           <path d="${pathTrack}" id="${trackId}" fill="none" stroke="none" />
           <path d="${pathSector}" fill="${era.fill}" stroke="${era.stroke}" stroke-width="2" />
-          <text class="arc-label" style="font-size: 13px;">
+          <text class="arc-label-line1" style="font-size: 15px;">
             <textPath href="#${trackId}" startOffset="50%" text-anchor="middle">
               ${era.title}
             </textPath>
@@ -543,7 +552,7 @@
       });
     }
 
-    // LEVEL 2: 7 Arcs with Big Font & Double-Line Curved Text
+    // LEVEL 2: Two Dedicated Curved Tracks per Arc (Bigger font, no overflow)
     function openLevelTwoSection(eraId) {
       currentLevel = 2;
       selectedEraId = eraId;
@@ -560,13 +569,16 @@
       document.getElementById('hud-text').innerHTML = `Select any of the <strong>7 ${data.title}</strong> pillars to launch its chronological timeline.`;
       document.getElementById('tier-back-btn').style.display = 'inline-block';
 
-      // Extra-wide ring so text has plenty of breathing room
-      const innerRadius = 115;
-      const outerRadius = 285;
-      const midRadius = (innerRadius + outerRadius) / 2;
+      // Broad sector band (125px to 335px = 210px of radial depth)
+      const innerRadius = 125;
+      const outerRadius = 335;
+
+      // Two distinct radial paths: outer track for Line 1, inner track for Line 2
+      const radiusLine1 = 265;
+      const radiusLine2 = 210;
 
       const count = data.topics.length; // 7 slices
-      const sliceAngle = 360 / count;   // ~51.43 degrees per slice
+      const sliceAngle = 360 / count;   // ~51.43 degrees
 
       data.topics.forEach((topic, idx) => {
         const gap = 2.2;
@@ -577,8 +589,14 @@
         const eDeg = endDeg - gap;
 
         const pathSector = buildArcSector(CX, CY, innerRadius, outerRadius, sDeg, eDeg);
-        const pathTrack = buildCurvedTextTrack(CX, CY, midRadius, sDeg + 1.5, eDeg - 1.5);
-        const trackId = `topic-track-${eraId}-${idx}`;
+        
+        // Track 1 for Top Line
+        const pathTrack1 = buildCurvedTextTrack(CX, CY, radiusLine1, sDeg + 1.5, eDeg - 1.5);
+        const trackId1 = `track1-${eraId}-${idx}`;
+
+        // Track 2 for Bottom Line
+        const pathTrack2 = buildCurvedTextTrack(CX, CY, radiusLine2, sDeg + 1.5, eDeg - 1.5);
+        const trackId2 = `track2-${eraId}-${idx}`;
 
         const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         g.setAttribute('class', 'arc-group');
@@ -586,14 +604,22 @@
           window.location.href = `timeline.html?topic=${topic.id}`;
         };
 
-        // Render two lines of text: line 1 raised slightly, line 2 dropped slightly
         g.innerHTML = `
-          <path d="${pathTrack}" id="${trackId}" fill="none" stroke="none" />
-          <path d="${pathSector}" fill="${topic.fill}" fill-opacity="0.88" stroke="${topic.stroke}" stroke-width="1.5" />
-          <text class="arc-label">
-            <textPath href="#${trackId}" startOffset="50%" text-anchor="middle">
-              <tspan dy="-7" x="0" text-anchor="middle">${topic.line1}</tspan>
-              <tspan dy="15" x="0" text-anchor="middle" font-size="10.5px" fill="#fde68a">${topic.line2}</tspan>
+          <path d="${pathTrack1}" id="${trackId1}" fill="none" stroke="none" />
+          <path d="${pathTrack2}" id="${trackId2}" fill="none" stroke="none" />
+          <path d="${pathSector}" fill="${topic.fill}" fill-opacity="0.88" stroke="${topic.stroke}" stroke-width="1.6" />
+          
+          <!-- Line 1: 14px bold -->
+          <text class="arc-label-line1">
+            <textPath href="#${trackId1}" startOffset="50%" text-anchor="middle">
+              ${topic.line1}
+            </textPath>
+          </text>
+
+          <!-- Line 2: 12px bright amber -->
+          <text class="arc-label-line2">
+            <textPath href="#${trackId2}" startOffset="50%" text-anchor="middle">
+              ${topic.line2}
             </textPath>
           </text>
         `;
@@ -609,7 +635,7 @@
       document.getElementById('center-main-label').textContent = 'INDIAN HISTORY';
       document.getElementById('center-sub-label').textContent = 'CLICK TO UNVEIL';
       document.getElementById('hud-badge').textContent = 'LEVEL 0 • CIVILIZATIONAL ORIGIN';
-      document.getElementById('hud-text').innerHTML = 'Click the central <strong>"INDIAN HISTORY"</strong> circle to split history into its 3 major epochs[cite: 1, 2, 3].';
+      document.getElementById('hud-text').innerHTML = 'Click the central <strong>"INDIAN HISTORY"</strong> circle to split history into its 3 major epochs.';
       document.getElementById('tier-back-btn').style.display = 'none';
     }
 
