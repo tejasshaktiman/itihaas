@@ -17,6 +17,8 @@
     :root {
       --bg-dark: #060911;
       --surface-glass: rgba(12, 18, 32, 0.9);
+      --surface-card: #0f172a;
+      --nav-bg: #050811;
       --border-subtle: #1e293b;
       
       --amber-500: #f59e0b;
@@ -31,7 +33,27 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
 
+      --radial-1: rgba(217, 119, 6, 0.09);
+      --radial-2: rgba(56, 189, 248, 0.05);
+
       --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* Light Theme Overrides */
+    [data-theme="light"] {
+      --bg-dark: #f8fafc;
+      --surface-glass: rgba(255, 255, 255, 0.94);
+      --surface-card: #f1f5f9;
+      --nav-bg: #e2e8f0;
+      --border-subtle: #cbd5e1;
+
+      --text-white: #0f172a;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+
+      --radial-1: rgba(245, 158, 11, 0.12);
+      --radial-2: rgba(56, 189, 248, 0.08);
     }
 
     body {
@@ -44,16 +66,17 @@
       flex-direction: column;
       user-select: none;
       background-image: 
-        radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.09) 0%, transparent 62%),
-        radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+        radial-gradient(circle at 50% 50%, var(--radial-1) 0%, transparent 62%),
+        radial-gradient(circle at 80% 20%, var(--radial-2) 0%, transparent 40%);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* =========================================================
-       2. APP HEADER
+       2. FULL HEADER WITH 5 NAVIGATION HIGHWAY BUTTONS
        ========================================================= */
     header {
       width: 100%;
-      height: 60px;
+      height: 64px;
       background: var(--surface-glass);
       border-bottom: 1px solid var(--border-subtle);
       backdrop-filter: blur(12px);
@@ -61,8 +84,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: relative;
-      z-index: 50;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .brand-link {
@@ -74,23 +99,24 @@
     }
 
     .brand-glyph {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
-      color: var(--text-white);
-      font-size: 15px;
+      color: #ffffff;
+      font-size: 16px;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 7px;
+      border-radius: 8px;
       box-shadow: 0 2px 10px var(--amber-glow);
     }
 
     .brand-title {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 800;
       letter-spacing: -0.02em;
+      color: var(--text-white);
     }
 
     .brand-title span {
@@ -99,33 +125,98 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       font-weight: 700;
-      margin-left: 4px;
+      margin-left: 5px;
     }
 
-    .header-nav {
+    /* 5 Navigation Highway Links */
+    nav.nav-bar {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      background: var(--nav-bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      gap: 2px;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
-    .back-home-btn {
-      background: #0f172a;
-      border: 1px solid var(--border-subtle);
+    .nav-item {
+      background: transparent;
+      border: none;
       color: var(--text-muted);
       font-size: 12px;
       font-weight: 600;
       padding: 6px 14px;
       border-radius: 6px;
+      cursor: pointer;
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
-    .back-home-btn:hover {
-      background: #1e293b;
+    .nav-item:hover {
       color: var(--text-white);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      background: var(--amber-600);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--amber-glow);
+    }
+
+    /* User Profile & Theme Toggle */
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-pill {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .theme-pill:hover {
+      border-color: var(--amber-500);
+      color: var(--text-white);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber-500), #ef4444);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
     }
 
     /* =========================================================
@@ -188,7 +279,7 @@
 
     .orbit-guide-outer {
       fill: none;
-      stroke: #1e293b;
+      stroke: var(--border-subtle);
       stroke-width: 1.2;
       stroke-dasharray: 4, 8;
       animation: spinClockwise 110s linear infinite;
@@ -201,12 +292,15 @@
       stroke-width: 1;
     }
 
+    [data-theme="light"] .orbit-guide-inner {
+      stroke: rgba(0, 0, 0, 0.06);
+    }
+
     @keyframes spinClockwise {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
 
-    /* Center Circle Disc */
     .center-disc {
       cursor: pointer;
       transform-origin: 430px 430px;
@@ -242,7 +336,6 @@
       pointer-events: none;
     }
 
-    /* Radial Arc Segments */
     .arc-group {
       cursor: pointer;
       transform-origin: 430px 430px;
@@ -253,7 +346,6 @@
       filter: brightness(1.2) drop-shadow(0 0 18px rgba(245, 158, 11, 0.5));
     }
 
-    /* Primary curved label */
     .arc-label-line1 {
       font-size: 14px;
       font-weight: 900;
@@ -264,7 +356,6 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9);
     }
 
-    /* Secondary sub-label */
     .arc-label-line2 {
       font-size: 12px;
       font-weight: 800;
@@ -288,7 +379,7 @@
     }
 
     .action-btn {
-      background: #0c1220;
+      background: var(--surface-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-muted);
       font-size: 12px;
@@ -300,29 +391,44 @@
     }
 
     .action-btn:hover {
-      background: #1e293b;
+      background: var(--nav-bg);
       color: var(--text-white);
-      border-color: #475569;
+      border-color: var(--amber-500);
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
-  <!-- ================= 1. HEADER ================= -->
+  <!-- ================= 1. GLOBAL HEADER ================= -->
   <header>
     <a href="index.html" class="brand-link">
       <div class="brand-glyph">इ</div>
       <div class="brand-title">ITIHAS<span>Universe</span></div>
     </a>
 
-    <div class="header-nav">
-      <a href="index.html" class="back-home-btn">
-        ← Home
-      </a>
+    <!-- The 5 Navigation Highway Links -->
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="universe.html" class="nav-item active">Guided Journey</a>
+      <a href="map_explorer.html" class="nav-item">Map Explorer</a>
+      <a href="mysteries.html" class="nav-item">Mysteries of India</a>
+      <a href="simulation.html" class="nav-item">Roleplay</a>
+    </nav>
+
+    <!-- User Profile & Theme Toggle -->
+    <div class="header-user">
+      <button class="theme-pill" id="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+      </button>
+      <div class="user-pill">
+        <div class="user-avatar">T</div>
+        <span class="user-name">Tejas Pal</span>
+      </div>
     </div>
   </header>
 
-  <!-- ================= 2. HUD STATUS ================= -->
+  <!-- ================= 2. TOP STATUS HUD ================= -->
   <div class="hud-bar">
     <div class="hud-badge" id="hud-badge">LEVEL 0 • CIVILIZATIONAL ORIGIN</div>
     <div class="hud-instruction" id="hud-text">
@@ -381,8 +487,31 @@
     </div>
   </div>
 
-  <!-- ================= 4. UNIVERSE ENGINE ================= -->
+  <!-- ================= 4. UNIVERSE ENGINE & THEME SCRIPT ================= -->
   <script>
+    /* Theme Toggle Sync with LocalStorage */
+    function updateThemeUI(theme) {
+      document.body.setAttribute('data-theme', theme);
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+
+      if (theme === 'light') {
+        icon.textContent = '☀️';
+        text.textContent = 'Light';
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = 'Dark';
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      localStorage.setItem('itihas_theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
     const CX = 430;
     const CY = 430;
 
@@ -423,7 +552,7 @@
       }
     ];
 
-    // LEVEL 2: Exact 7 Headings with Line 1 & Line 2 Clean Pairing
+    // LEVEL 2: Exact 7 Headings with Clean Line 1 & Line 2 Pairing
     const ERA_SECTIONS = {
       ancient: {
         title: 'ANCIENT HISTORY',
@@ -552,7 +681,7 @@
       });
     }
 
-    // LEVEL 2: Two Dedicated Curved Tracks per Arc (Bigger font, no overflow)
+    // LEVEL 2: Two Dedicated Curved Tracks per Arc
     function openLevelTwoSection(eraId) {
       currentLevel = 2;
       selectedEraId = eraId;
@@ -569,16 +698,13 @@
       document.getElementById('hud-text').innerHTML = `Select any of the <strong>7 ${data.title}</strong> pillars to launch its chronological timeline.`;
       document.getElementById('tier-back-btn').style.display = 'inline-block';
 
-      // Broad sector band (125px to 335px = 210px of radial depth)
       const innerRadius = 125;
       const outerRadius = 335;
-
-      // Two distinct radial paths: outer track for Line 1, inner track for Line 2
       const radiusLine1 = 265;
       const radiusLine2 = 210;
 
-      const count = data.topics.length; // 7 slices
-      const sliceAngle = 360 / count;   // ~51.43 degrees
+      const count = data.topics.length;
+      const sliceAngle = 360 / count;
 
       data.topics.forEach((topic, idx) => {
         const gap = 2.2;
@@ -590,11 +716,9 @@
 
         const pathSector = buildArcSector(CX, CY, innerRadius, outerRadius, sDeg, eDeg);
         
-        // Track 1 for Top Line
         const pathTrack1 = buildCurvedTextTrack(CX, CY, radiusLine1, sDeg + 1.5, eDeg - 1.5);
         const trackId1 = `track1-${eraId}-${idx}`;
 
-        // Track 2 for Bottom Line
         const pathTrack2 = buildCurvedTextTrack(CX, CY, radiusLine2, sDeg + 1.5, eDeg - 1.5);
         const trackId2 = `track2-${eraId}-${idx}`;
 
@@ -609,14 +733,12 @@
           <path d="${pathTrack2}" id="${trackId2}" fill="none" stroke="none" />
           <path d="${pathSector}" fill="${topic.fill}" fill-opacity="0.88" stroke="${topic.stroke}" stroke-width="1.6" />
           
-          <!-- Line 1: 14px bold -->
           <text class="arc-label-line1">
             <textPath href="#${trackId1}" startOffset="50%" text-anchor="middle">
               ${topic.line1}
             </textPath>
           </text>
 
-          <!-- Line 2: 12px bright amber -->
           <text class="arc-label-line2">
             <textPath href="#${trackId2}" startOffset="50%" text-anchor="middle">
               ${topic.line2}
@@ -640,6 +762,10 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // Sync with global theme preference
+      const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
+      updateThemeUI(savedTheme);
+
       const params = new URLSearchParams(window.location.search);
       const requestedEra = params.get('era');
       if (requestedEra && ERA_SECTIONS[requestedEra]) {
