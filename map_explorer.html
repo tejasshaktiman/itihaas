@@ -15,15 +15,38 @@
       --bg-dark: #050811;
       --panel-dark: #0a0f1d;
       --card-inner: #11182c;
+      --surface-card: #0f172a;
+      --nav-bg: #050811;
       --border-subtle: #1e293b;
+      --border-hover: #334155;
+
       --amber-500: #f59e0b;
+      --amber-600: #d97706;
       --amber-glow: rgba(245, 158, 11, 0.35);
       --sky-400: #38bdf8;
+
       --text-white: #ffffff;
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
+
       --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* Light Theme Overrides */
+    [data-theme="light"] {
+      --bg-dark: #f8fafc;
+      --panel-dark: #ffffff;
+      --card-inner: #f1f5f9;
+      --surface-card: #e2e8f0;
+      --nav-bg: #e2e8f0;
+      --border-subtle: #cbd5e1;
+      --border-hover: #94a3b8;
+
+      --text-white: #0f172a;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --text-dim: #64748b;
     }
 
     body {
@@ -34,17 +57,26 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
+    /* =========================================================
+       1. GLOBAL UNIFIED HEADER WITH 5 HIGHWAY BUTTONS
+       ========================================================= */
     header {
-      height: 56px;
-      background: rgba(10, 15, 29, 0.94);
+      width: 100%;
+      height: 64px;
+      background: var(--panel-dark);
       border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
       padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      z-index: 50;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .brand-link {
@@ -56,21 +88,24 @@
     }
 
     .brand-glyph {
-      width: 30px;
-      height: 30px;
-      background: linear-gradient(135deg, var(--amber-500), #b45309);
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
       color: #fff;
       font-size: 15px;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 7px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px var(--amber-glow);
     }
 
     .brand-title {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-white);
     }
 
     .brand-title span {
@@ -82,17 +117,100 @@
       margin-left: 5px;
     }
 
-    .nav-btn {
-      background: #0f172a;
+    /* 5 Navigation Highway Links */
+    nav.nav-bar {
+      display: flex;
+      background: var(--nav-bg);
+      padding: 4px;
+      border-radius: 8px;
       border: 1px solid var(--border-subtle);
+      gap: 2px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .nav-item {
+      background: transparent;
+      border: none;
       color: var(--text-muted);
       font-size: 12px;
       font-weight: 600;
       padding: 6px 14px;
       border-radius: 6px;
+      cursor: pointer;
       text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
+    .nav-item:hover {
+      color: var(--text-white);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      background: var(--amber-600);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--amber-glow);
+    }
+
+    /* User Profile & Theme Toggle */
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-pill {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .theme-pill:hover {
+      border-color: var(--amber-500);
+      color: var(--text-white);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber-500), #ef4444);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* =========================================================
+       2. WORKSPACE STAGE
+       ========================================================= */
     .workspace-stage {
       flex: 1;
       display: grid;
@@ -110,13 +228,14 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .empire-name {
       font-size: 24px;
       font-weight: 900;
-      color: #ffffff;
+      color: var(--text-white);
       margin-bottom: 4px;
     }
 
@@ -132,7 +251,7 @@
     .empire-narrative {
       font-size: 13px;
       line-height: 1.65;
-      color: #cbd5e1;
+      color: var(--text-muted);
       margin-bottom: 18px;
     }
 
@@ -146,7 +265,7 @@
     }
 
     .territory-stats strong {
-      color: #ffffff;
+      color: var(--text-white);
       display: block;
       margin-bottom: 3px;
     }
@@ -167,6 +286,13 @@
       cursor: pointer;
       display: inline-block;
       margin-top: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .jump-btn:hover {
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      box-shadow: 0 4px 16px var(--amber-glow);
+      transform: translateY(-1px);
     }
 
     .map-display-panel {
@@ -177,6 +303,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .map-viewport {
@@ -197,19 +324,23 @@
     /* Individual State Polygons */
     .state-region {
       fill: #1e293b;
-      stroke: #090e1a;
+      stroke: var(--panel-dark);
       stroke-width: 1.2;
       cursor: pointer;
       transition: fill 0.3s ease, filter 0.2s ease;
     }
 
+    [data-theme="light"] .state-region {
+      stroke: #ffffff;
+    }
+
     .state-region:hover {
-      filter: brightness(1.35) drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+      filter: brightness(1.35) drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
     }
 
     .timeline-scrubber-bar {
       margin-top: 12px;
-      background: #070b16;
+      background: var(--card-inner);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
       padding: 12px 18px;
@@ -239,26 +370,53 @@
     }
 
     .slider-ticks span.active {
-      color: #ffffff;
+      color: var(--amber-500);
       font-weight: 800;
     }
 
     input[type=range] {
       width: 100%;
-      background: #1e293b;
+      background: var(--border-subtle);
       height: 6px;
       border-radius: 4px;
+      outline: none;
+    }
+
+    @media (max-width: 900px) {
+      nav.nav-bar { display: none; }
+      .workspace-stage { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
+  <!-- ================= 1. GLOBAL HEADER ================= -->
   <header>
     <a href="index.html" class="brand-link">
       <div class="brand-glyph">इ</div>
       <div class="brand-title">ITIHAS<span>Vector Map Explorer</span></div>
     </a>
-    <a href="universe.html" class="nav-btn">Universe Hub</a>
+
+    <!-- The 5 Navigation Highway Links -->
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="universe.html" class="nav-item">Guided Journey</a>
+      <a href="map_explorer.html" class="nav-item active">Map Explorer</a>
+      <a href="mysteries.html" class="nav-item">Mysteries of India</a>
+      <a href="simulation.html" class="nav-item">Roleplay</a>
+    </nav>
+
+    <!-- User Profile & Theme Toggle -->
+    <div class="header-user">
+      <button class="theme-pill" id="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+      </button>
+      <div class="user-pill">
+        <div class="user-avatar">T</div>
+        <span class="user-name">Tejas Pal</span>
+      </div>
+    </div>
   </header>
 
   <div class="workspace-stage">
@@ -268,7 +426,7 @@
       <div>
         <h1 class="empire-name" id="insp-title">Select an Empire</h1>
         <span class="epoch-badge" id="insp-epoch">Temporal Epoch</span>
-        <p class="empire-narrative" id="insp-desc">Click any highlighted territory on the map to inspect geopolitical power and borders.</p>
+        <p class="empire-narrative" id="insp-desc">Click any highlighted territory on the map to inspect geopolitical power and borders[cite: 1].</p>
         <div class="territory-stats" id="insp-stats">
           <strong>Key Hubs:</strong> Select a territory<br>
           <strong>Frontiers:</strong> Active boundaries
@@ -280,7 +438,6 @@
     <!-- RIGHT: PURE VECTOR REGIONS -->
     <div class="map-display-panel">
       <div class="map-viewport">
-        <!-- Pure vector layout: perfectly proportioned, sharp, and scalable -->
         <svg id="native-india-svg" viewBox="0 0 400 440">
           <!-- KASHMIR -->
           <path id="JK" class="state-region" d="M 130,20 L 160,20 L 180,45 L 160,75 L 135,75 L 120,50 Z" onclick="clickRegion('JK')" />
@@ -339,7 +496,31 @@
 
   </div>
 
+  <!-- ================= 3. MAP ENGINE & THEME SCRIPT ================= -->
   <script>
+    /* Theme Toggle Sync */
+    function updateThemeUI(theme) {
+      document.body.setAttribute('data-theme', theme);
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+
+      if (theme === 'light') {
+        icon.textContent = '☀️';
+        text.textContent = 'Light';
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = 'Dark';
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      localStorage.setItem('itihas_theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
     // State grouping mapping across 5 eras
     const ERA_DATA = [
       // 0: ANCIENT (260 BCE)
@@ -469,9 +650,12 @@
       const data = ERA_DATA[currentEpoch];
       document.getElementById("slider-year-label").textContent = data.year;
 
+      const isLight = document.body.getAttribute('data-theme') === 'light';
+      const defaultNeutralColor = isLight ? "#cbd5e1" : "#1e293b";
+
       // Reset all state colors
       document.querySelectorAll(".state-region").forEach(el => {
-        el.style.fill = "#1e293b";
+        el.style.fill = defaultNeutralColor;
         el.dataset.faction = "";
       });
 
@@ -487,7 +671,6 @@
         });
       });
 
-      // Default select the first faction
       const firstFKey = Object.keys(data.factions)[0];
       selectFaction(firstFKey);
     }
@@ -524,6 +707,10 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
+      // Sync saved theme preference
+      const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
+      updateThemeUI(savedTheme);
+
       renderMap();
     });
   </script>
