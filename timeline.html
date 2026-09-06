@@ -772,15 +772,15 @@
     }
 
     function launchRoleplayModal() {
-      const topicData = ALL_HISTORY_DATA[activeTopicKey];
-      const current = topicData.events.find(item => item.id === activeEventId);
-      alert(
-        `⚡ LAUNCHING HISTORICAL ROLEPLAY ⚡\n\n` +
-        `Era / Empire: ${topicData.title}\n` +
-        `Milestone: ${current.year} — ${current.title}\n\n` +
-        `Context: You are commanding this critical historical juncture!`
-      );
-    }
+  const topicData = ALL_HISTORY_DATA[activeTopicKey];
+  const current = topicData ? topicData.events.find(item => item.id === activeEventId) : null;
+  
+  const eventParam = current ? encodeURIComponent(current.id) : "";
+  const topicParam = activeTopicKey ? encodeURIComponent(activeTopicKey) : "";
+
+  // Navigate directly to the simulation/roleplay page
+  window.location.href = `simulation.html?topic=${topicParam}&event=${eventParam}`;
+}
 
     function promptFollowUp(questionType) {
       const streamContainer = document.getElementById("typewriter-stream");
