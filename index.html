@@ -18,6 +18,10 @@
       --bg-dark: #070a12;
       --surface-dark: #0c1220;
       --surface-card: #0f172a;
+      --header-bg: rgba(9, 13, 22, 0.85);
+      --nav-bg: #050811;
+      --feature-bg: #080d18;
+      
       --border-subtle: #1e293b;
       --border-hover: #334155;
       
@@ -34,7 +38,31 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
 
+      --radial-1: rgba(217, 119, 6, 0.1);
+      --radial-2: rgba(56, 189, 248, 0.05);
+
       --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Light Mode Overrides */
+    [data-theme="light"] {
+      --bg-dark: #f8fafc;
+      --surface-dark: #ffffff;
+      --surface-card: #f1f5f9;
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --nav-bg: #e2e8f0;
+      --feature-bg: #ffffff;
+
+      --border-subtle: #cbd5e1;
+      --border-hover: #94a3b8;
+
+      --text-white: #0f172a;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+
+      --radial-1: rgba(245, 158, 11, 0.12);
+      --radial-2: rgba(56, 189, 248, 0.08);
     }
 
     body {
@@ -46,8 +74,9 @@
       display: flex;
       flex-direction: column;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.1) 0%, transparent 60%),
-        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 50% 0%, var(--radial-1) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, var(--radial-2) 0%, transparent 50%);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* =========================================================
@@ -56,7 +85,7 @@
     header {
       width: 100%;
       height: 64px;
-      background: rgba(9, 13, 22, 0.85);
+      background: var(--header-bg);
       border-bottom: 1px solid var(--border-subtle);
       backdrop-filter: blur(12px);
       padding: 0 28px;
@@ -66,6 +95,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .brand-link {
@@ -80,7 +110,7 @@
       width: 32px;
       height: 32px;
       background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
-      color: var(--text-white);
+      color: #ffffff;
       font-size: 16px;
       font-weight: 900;
       display: flex;
@@ -107,11 +137,12 @@
 
     nav.nav-bar {
       display: flex;
-      background: #050811;
+      background: var(--nav-bg);
       padding: 4px;
       border-radius: 8px;
       border: 1px solid var(--border-subtle);
       gap: 2px;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .nav-item {
@@ -129,12 +160,12 @@
 
     .nav-item:hover {
       color: var(--text-white);
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .nav-item.active {
       background: var(--amber-600);
-      color: var(--text-white);
+      color: #ffffff;
       box-shadow: 0 2px 8px var(--amber-glow);
     }
 
@@ -153,6 +184,16 @@
       padding: 5px 12px;
       border-radius: 20px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .theme-pill:hover {
+      border-color: var(--amber-500);
+      color: var(--text-white);
     }
 
     .user-pill {
@@ -168,7 +209,7 @@
       height: 28px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--amber-500), #ef4444);
-      color: var(--text-white);
+      color: #ffffff;
       font-size: 11px;
       font-weight: 800;
       display: flex;
@@ -203,13 +244,17 @@
       padding: 5px 14px;
       background: rgba(217, 119, 6, 0.12);
       border: 1px solid rgba(245, 158, 11, 0.4);
-      color: #fbbf24;
+      color: #d97706;
       font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       border-radius: 20px;
       margin-bottom: 22px;
+    }
+
+    [data-theme="dark"] .hero-badge {
+      color: #fbbf24;
     }
 
     h1.hero-heading {
@@ -236,7 +281,6 @@
       margin-bottom: 36px;
     }
 
-    /* Dual Action Highway Buttons */
     .cta-row {
       display: flex;
       gap: 14px;
@@ -247,7 +291,7 @@
 
     .btn-journey {
       background: linear-gradient(135deg, var(--amber-600), #b45309);
-      color: var(--text-white);
+      color: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.15);
       font-size: 13.5px;
       font-weight: 800;
@@ -286,7 +330,7 @@
     }
 
     .btn-map-direct:hover {
-      background: #1e293b;
+      background: var(--surface-dark);
       border-color: var(--border-hover);
       color: var(--text-white);
       transform: translateY(-2px);
@@ -306,7 +350,7 @@
       justify-content: space-between;
       align-items: baseline;
       margin-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid var(--border-subtle);
       padding-bottom: 10px;
     }
 
@@ -341,7 +385,7 @@
       cursor: pointer;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
       position: relative;
       overflow: hidden;
     }
@@ -353,7 +397,7 @@
     /* Ancient */
     .card-ancient:hover {
       border-color: var(--sky-400);
-      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.12);
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
     }
     .card-ancient .era-tag { color: var(--sky-400); }
 
@@ -364,14 +408,14 @@
     }
     .card-medieval:hover {
       border-color: var(--amber-500);
-      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
     }
     .card-medieval .era-tag { color: var(--amber-500); }
 
     /* Modern */
     .card-modern:hover {
       border-color: var(--emerald-400);
-      box-shadow: 0 8px 24px rgba(52, 211, 153, 0.12);
+      box-shadow: 0 8px 24px rgba(52, 211, 153, 0.15);
     }
     .card-modern .era-tag { color: var(--emerald-400); }
 
@@ -380,7 +424,7 @@
       top: 0;
       right: 0;
       background: var(--amber-600);
-      color: var(--text-white);
+      color: #ffffff;
       font-size: 9px;
       font-weight: 800;
       text-transform: uppercase;
@@ -416,7 +460,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid var(--border-subtle);
       padding-top: 14px;
       font-size: 12px;
       font-weight: 700;
@@ -427,7 +471,7 @@
        ========================================================= */
     .feature-strip {
       width: 100%;
-      background: #080d18;
+      background: var(--feature-bg);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
       padding: 20px;
@@ -435,6 +479,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
       text-align: left;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .feature-box {
@@ -470,7 +515,7 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
   <!-- ================= 1. GLOBAL HEADER ================= -->
   <header>
@@ -483,14 +528,19 @@
     <nav class="nav-bar">
       <a href="index.html" class="nav-item active">Home</a>
       <a href="universe.html" class="nav-item">Guided Journey</a>
-      <a href="map-explorer.html" class="nav-item">Map Explorer</a>
+      <a href="map.html" class="nav-item">Map Explorer</a>
       <a href="mysteries.html" class="nav-item">Mysteries of India</a>
       <a href="simulation.html" class="nav-item">Roleplay</a>
     </nav>
 
     <!-- User Profile Area -->
     <div class="header-user">
-      <button class="theme-pill">🌙 Dark</button>
+      <!-- Dark/Light Mode Trigger -->
+      <button class="theme-pill" id="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+      </button>
+
       <div class="user-pill">
         <div class="user-avatar">T</div>
         <span class="user-name">Tejas Pal</span>
@@ -519,7 +569,7 @@
       <a href="universe.html" class="btn-journey">
         START THE JOURNEY ➔
       </a>
-      <a href="map-explorer.html" class="btn-map-direct">
+      <a href="map_explorer.html" class="btn-map-direct">
         🗺 Jump Directly to Historical Map
       </a>
     </div>
@@ -620,6 +670,37 @@
     </section>
 
   </main>
+
+  <!-- ================= 5. THEME TOGGLE SCRIPT ================= -->
+  <script>
+    function updateThemeUI(theme) {
+      document.body.setAttribute('data-theme', theme);
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+
+      if (theme === 'light') {
+        icon.textContent = '☀️';
+        text.textContent = 'Light';
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = 'Dark';
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      localStorage.setItem('itihas_theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
+    // Initialize with saved preference or default to dark
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
+      updateThemeUI(savedTheme);
+    });
+  </script>
 
 </body>
 </html>
