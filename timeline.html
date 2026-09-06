@@ -126,7 +126,6 @@
       margin-left: 5px;
     }
 
-    /* 5 Navigation Highway Links */
     nav.nav-bar {
       display: flex;
       background: var(--nav-bg);
@@ -162,7 +161,6 @@
       box-shadow: 0 2px 8px var(--amber-glow);
     }
 
-    /* Header Profile & Theme Pill */
     .header-user {
       display: flex;
       align-items: center;
@@ -218,14 +216,69 @@
     }
 
     /* =========================================================
-       2. WORKSPACE AREA
+       2. RIGHT-SIDE SCREEN RAIL & WHITE CAPSULE SLIDER
+       ========================================================= */
+    .screen-slider-track {
+      position: fixed;
+      top: 80px;
+      bottom: 24px;
+      right: 8px;
+      width: 4px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 4px;
+      z-index: 1000;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .screen-slider-track:hover {
+      background: rgba(245, 158, 11, 0.4);
+    }
+
+    .screen-slider-capsule {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 38px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 6px rgba(255, 255, 255, 0.8);
+      cursor: grab;
+      transition: background-color 0.2s;
+    }
+
+    .screen-slider-capsule:active {
+      cursor: grabbing;
+      background: #fef08a;
+      box-shadow: 0 2px 14px rgba(245, 158, 11, 0.6);
+    }
+
+    /* Tiny grip indicator inside white capsule */
+    .screen-slider-capsule::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 12px;
+      border-top: 2px solid #94a3b8;
+      border-bottom: 2px solid #94a3b8;
+    }
+
+    /* =========================================================
+       3. WORKSPACE AREA
        ========================================================= */
     .workspace-container {
       flex: 1;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
-      padding: 20px 24px;
+      padding: 20px 32px 20px 24px;
       overflow: hidden;
     }
 
@@ -240,6 +293,7 @@
       justify-content: space-between;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
       overflow: hidden;
+      position: relative;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
 
@@ -284,7 +338,13 @@
     .story-content-body {
       flex: 1;
       overflow-y: auto;
-      padding-right: 6px;
+      padding-right: 8px;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .story-content-body::-webkit-scrollbar {
+      display: none;
     }
 
     .story-event-title {
@@ -307,7 +367,7 @@
 
     .stream-text-terminal {
       font-size: 13.5px;
-      line-height: 1.7;
+      line-height: 1.75;
       color: var(--text-muted);
       white-space: pre-wrap;
     }
@@ -404,6 +464,11 @@
       overflow-y: auto;
       padding: 10px 18px 70px 10px;
       position: relative;
+      scrollbar-width: none;
+    }
+
+    .timeline-track-viewport::-webkit-scrollbar {
+      display: none;
     }
 
     .timeline-vertical-ruler {
@@ -563,7 +628,7 @@
       <div class="brand-text">ITIHAS<span>Chronicle Hub</span></div>
     </a>
 
-    <!-- The 5 Navigation Highway Links -->
+    <!-- 5 Navigation Highway Links -->
     <nav class="nav-bar">
       <a href="index.html" class="nav-item">Home</a>
       <a href="universe.html" class="nav-item">Guided Journey</a>
@@ -579,28 +644,38 @@
         <span id="theme-text">Dark</span>
       </button>
       <div class="user-pill">
-        <div class="user-avatar">S</div>
-        <span class="user-name">Syntax Squad</span>
+        <div class="user-avatar">T</div>
+        <span class="user-name">Tejas Pal</span>
       </div>
     </div>
   </header>
 
-  <!-- ================= 2. WORKSPACE CONTAINER ================= -->
+  <!-- ================= 2. RIGHT-SIDE SCREEN LINE & WHITE CAPSULE SLIDER ================= -->
+  <div class="screen-slider-track" id="screen-slider-track" title="Left-click and drag up/down to scroll the page">
+    <div class="screen-slider-capsule" id="screen-slider-capsule"></div>
+  </div>
+
+  <!-- ================= 3. WORKSPACE CONTAINER ================= -->
   <div class="workspace-container">
     
     <!-- LEFT PANEL: Typewriter story box -->
     <div class="left-story-panel">
-      <div>
+      <div style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+        
         <div class="stream-meta-header">
-          <span class="stream-badge-pill">PRE-CACHED STREAM READY</span>
+          <div class="meta-left-group">
+            <span class="stream-badge-pill">PRE-CACHED STREAM READY</span>
+          </div>
           <span class="latency-indicator" id="display-topic-name">Topic</span>
         </div>
 
-        <div class="story-content-body">
+        <!-- Story Text Content Body -->
+        <div class="story-content-body" id="story-scroll-container">
           <div class="story-event-year" id="display-event-year">--</div>
           <h1 class="story-event-title" id="display-event-title">Loading...</h1>
           <div class="stream-text-terminal" id="typewriter-stream"></div>
         </div>
+
       </div>
 
       <div class="story-footer-interactive">
@@ -620,7 +695,7 @@
         <span>Hover for details • Click to stream story</span>
       </div>
 
-      <div class="timeline-track-viewport">
+      <div class="timeline-track-viewport" id="timeline-scroll-container">
         <div class="timeline-vertical-ruler"></div>
         <div id="milestones-container"></div>
       </div>
@@ -637,7 +712,7 @@
   <!-- LOAD CENTRAL DATA FILE -->
   <script src="allHistoryData.js"></script>
 
-  <!-- ================= 3. SCRIPTS ================= -->
+  <!-- ================= 4. SCRIPTS ================= -->
   <script>
     /* Theme Toggle Synchronizer */
     function updateThemeUI(theme) {
@@ -666,6 +741,69 @@
     let activeEventId = "";
     let typewriterTimer = null;
 
+    // =========================================================================
+    // RIGHT-SIDE LINE & WHITE CAPSULE DRAG ENGINE
+    // =========================================================================
+    // =========================================================================
+    // RIGHT-SIDE LINE & WHITE CAPSULE DRAG ENGINE (STORY ONLY)
+    // =========================================================================
+    function setupScreenSlider() {
+      const track = document.getElementById("screen-slider-track");
+      const capsule = document.getElementById("screen-slider-capsule");
+      const storyContainer = document.getElementById("story-scroll-container");
+
+      if (!track || !capsule || !storyContainer) return;
+
+      let isDragging = false;
+
+      function updateCapsulePosition() {
+        const maxScroll = storyContainer.scrollHeight - storyContainer.clientHeight;
+        const trackHeight = track.clientHeight - capsule.clientHeight;
+        const ratio = maxScroll > 0 ? (storyContainer.scrollTop / maxScroll) : 0;
+        const topPos = Math.max(0, Math.min(trackHeight, ratio * trackHeight));
+
+        capsule.style.top = `${topPos}px`;
+      }
+
+      function handleDrag(clientY) {
+        const rect = track.getBoundingClientRect();
+        const trackHeight = rect.height - capsule.clientHeight;
+        const offsetY = clientY - rect.top - (capsule.clientHeight / 2);
+        const ratio = Math.max(0, Math.min(1, offsetY / trackHeight));
+
+        const storyMax = storyContainer.scrollHeight - storyContainer.clientHeight;
+        if (storyMax > 0) {
+          storyContainer.scrollTop = ratio * storyMax;
+        }
+
+        capsule.style.top = `${ratio * trackHeight}px`;
+      }
+
+      // Left click on track or capsule starts drag
+      track.addEventListener("mousedown", (e) => {
+        if (e.button !== 0) return; // Only left-click
+        isDragging = true;
+        handleDrag(e.clientY);
+        e.preventDefault();
+      });
+
+      window.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          handleDrag(e.clientY);
+        }
+      });
+
+      window.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      // Update capsule position as user scrolls the story
+      storyContainer.addEventListener("scroll", updateCapsulePosition);
+
+      // Re-calculate capsule when text streams in
+      const observer = new MutationObserver(updateCapsulePosition);
+      observer.observe(storyContainer, { childList: true, subtree: true, characterData: true });
+    }
     // Bulletproof URL parameter reader
     function getTopicFromURL() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -694,6 +832,9 @@
       const cursor = document.createElement("span");
       cursor.className = "terminal-cursor";
       element.appendChild(cursor);
+
+      const container = document.getElementById("story-scroll-container");
+      if (container) container.scrollTop = 0;
 
       typewriterTimer = setInterval(() => {
         if (index < text.length) {
@@ -772,15 +913,14 @@
     }
 
     function launchRoleplayModal() {
-  const topicData = ALL_HISTORY_DATA[activeTopicKey];
-  const current = topicData ? topicData.events.find(item => item.id === activeEventId) : null;
-  
-  const eventParam = current ? encodeURIComponent(current.id) : "";
-  const topicParam = activeTopicKey ? encodeURIComponent(activeTopicKey) : "";
+      const topicData = ALL_HISTORY_DATA[activeTopicKey];
+      const current = topicData ? topicData.events.find(item => item.id === activeEventId) : null;
+      
+      const eventParam = current ? encodeURIComponent(current.id) : "";
+      const topicParam = activeTopicKey ? encodeURIComponent(activeTopicKey) : "";
 
-  // Navigate directly to the simulation/roleplay page
-  window.location.href = `simulation.html?topic=${topicParam}&event=${eventParam}`;
-}
+      window.location.href = `simulation.html?topic=${topicParam}&event=${eventParam}`;
+    }
 
     function promptFollowUp(questionType) {
       const streamContainer = document.getElementById("typewriter-stream");
@@ -794,9 +934,10 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      // Sync saved theme
       const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
       updateThemeUI(savedTheme);
+
+      setupScreenSlider();
 
       const topic = getTopicFromURL();
       loadTopicTimeline(topic);
