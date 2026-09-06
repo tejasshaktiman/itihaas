@@ -13,14 +13,51 @@
       padding: 0;
     }
 
+    :root {
+      --bg-dark: #010003;
+      --surface-glass: rgba(10, 5, 18, 0.92);
+      --surface-card: #0f172a;
+      --nav-bg: #050811;
+      --border-subtle: #1e293b;
+      
+      --amber-500: #f59e0b;
+      --amber-600: #d97706;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+
+      --sky-400: #38bdf8;
+      --emerald-400: #34d399;
+
+      --text-white: #ffffff;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* Light Mode Overrides */
+    [data-theme="light"] {
+      --bg-dark: #f1f5f9;
+      --surface-glass: rgba(255, 255, 255, 0.92);
+      --surface-card: #e2e8f0;
+      --nav-bg: #e2e8f0;
+      --border-subtle: #cbd5e1;
+
+      --text-white: #0f172a;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+    }
+
     body {
-      background: #010003;
-      color: #f8fafc;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-stack);
       height: 100vh;
       width: 100vw;
       overflow: hidden;
       user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     #webgl-canvas {
@@ -46,7 +83,156 @@
     .cinema-bar-bottom { bottom: 0; }
 
     /* =========================================================
-       1. INITIAL CLOUD OVERLAY & 360 TRIGGER
+       1. GLOBAL UNIFIED HEADER WITH 5 HIGHWAY BUTTONS
+       ========================================================= */
+    header {
+      position: fixed;
+      top: 44px;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--surface-glass);
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-glyph {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--amber-500), #9333ea);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-white);
+    }
+
+    .brand-title span {
+      color: var(--amber-500);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-left: 5px;
+    }
+
+    /* 5 Navigation Highway Links */
+    nav.nav-bar {
+      display: flex;
+      background: var(--nav-bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      gap: 2px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .nav-item {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover {
+      color: var(--text-white);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      background: var(--amber-600);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--amber-glow);
+    }
+
+    /* User Profile & Theme Toggle */
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-pill {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .theme-pill:hover {
+      border-color: var(--amber-500);
+      color: var(--text-white);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber-500), #ef4444);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* =========================================================
+       2. INITIAL CLOUD OVERLAY & 360 TRIGGER
        ========================================================= */
     #cloud-overlay {
       position: fixed;
@@ -116,80 +302,6 @@
       color: #94a3b8;
     }
 
-    /* =========================================================
-       2. TOP BAR & NAVIGATION
-       ========================================================= */
-    header {
-      position: fixed;
-      top: 44px;
-      left: 0;
-      right: 0;
-      height: 52px;
-      padding: 0 26px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 35;
-      pointer-events: none;
-    }
-
-    .brand-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: inherit;
-      pointer-events: auto;
-    }
-
-    .brand-glyph {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #f59e0b, #9333ea);
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
-    }
-
-    .brand-title {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-    }
-
-    .brand-title span {
-      color: #fbbf24;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin-left: 6px;
-    }
-
-    .nav-btn {
-      background: rgba(18, 9, 31, 0.75);
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      color: #c084fc;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 6px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      pointer-events: auto;
-      backdrop-filter: blur(8px);
-      transition: all 0.2s;
-    }
-
-    .nav-btn:hover {
-      background: #4c1d95;
-      color: #ffffff;
-      border-color: #fbbf24;
-    }
-
     /* Hotspot Navigation Chips */
     .hint-legend {
       position: fixed;
@@ -206,13 +318,13 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(14, 7, 24, 0.9);
+      background: var(--surface-glass);
       border: 1px solid rgba(168, 85, 247, 0.35);
       padding: 7px 14px;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 600;
-      color: #f1f5f9;
+      color: var(--text-main);
       cursor: pointer;
       backdrop-filter: blur(10px);
       transition: all 0.25s ease;
@@ -234,22 +346,22 @@
        ========================================================= */
     #mystery-drawer {
       position: fixed;
-      top: 64px;
+      top: 110px;
       bottom: 64px;
       right: -460px;
       width: 410px;
       max-width: 90vw;
-      background: rgba(10, 5, 18, 0.95);
+      background: var(--surface-glass);
       border: 1px solid rgba(168, 85, 247, 0.5);
       border-radius: 16px;
       padding: 26px;
       backdrop-filter: blur(20px);
-      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.9);
+      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
       z-index: 38;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
       overflow-y: auto;
     }
 
@@ -263,12 +375,12 @@
       right: 20px;
       background: transparent;
       border: none;
-      color: #94a3b8;
+      color: var(--text-dim);
       font-size: 20px;
       cursor: pointer;
     }
 
-    .drawer-close:hover { color: #ffffff; }
+    .drawer-close:hover { color: var(--text-white); }
 
     .drawer-badge {
       font-size: 9.5px;
@@ -281,14 +393,14 @@
       margin-bottom: 10px;
     }
 
-    .badge-flag-pill { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; }
-    .badge-prasad-pill { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fde68a; }
-    .badge-gate-pill { background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #bae6fd; }
+    .badge-flag-pill { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; }
+    .badge-prasad-pill { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #d97706; }
+    .badge-gate-pill { background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #0284c7; }
 
     .drawer-title {
       font-size: 20px;
       font-weight: 900;
-      color: #ffffff;
+      color: var(--text-white);
       line-height: 1.25;
       margin-bottom: 12px;
     }
@@ -296,13 +408,13 @@
     .drawer-prose {
       font-size: 13px;
       line-height: 1.7;
-      color: #cbd5e1;
+      color: var(--text-muted);
       margin-bottom: 16px;
     }
 
     .drawer-section {
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
       border-radius: 10px;
       padding: 12px 14px;
       margin-bottom: 12px;
@@ -318,17 +430,50 @@
 
     .controls-hint {
       font-size: 11px;
-      color: #64748b;
+      color: var(--text-dim);
       text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid var(--border-subtle);
       padding-top: 10px;
+    }
+
+    @media (max-width: 900px) {
+      nav.nav-bar { display: none; }
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
   <div class="cinema-bar-top"></div>
   <div class="cinema-bar-bottom"></div>
+
+  <!-- ================= 1. GLOBAL HEADER ================= -->
+  <header>
+    <a href="index.html" class="brand-link">
+      <div class="brand-glyph">इ</div>
+      <div class="brand-title">ITIHAS<span>Sanctum Vault</span></div>
+    </a>
+
+    <!-- The 5 Navigation Highway Links -->
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="universe.html" class="nav-item">Guided Journey</a>
+      <a href="map_explorer.html" class="nav-item">Map Explorer</a>
+      <a href="mysteries.html" class="nav-item active">Mysteries of India</a>
+      <a href="simulation.html" class="nav-item">Roleplay</a>
+    </nav>
+
+    <!-- User Profile & Theme Toggle -->
+    <div class="header-user">
+      <button class="theme-pill" id="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dark</span>
+      </button>
+      <div class="user-pill">
+        <div class="user-avatar">T</div>
+        <span class="user-name">Tejas Pal</span>
+      </div>
+    </div>
+  </header>
 
   <canvas id="webgl-canvas"></canvas>
 
@@ -340,15 +485,6 @@
       <p class="prompt-sub">Click anywhere to part the 360° storm</p>
     </div>
   </div>
-
-  <!-- ================= TOP HEADER ================= -->
-  <header>
-    <a href="index.html" class="brand-link">
-      <div class="brand-glyph">इ</div>
-      <div class="brand-title">ITIHAS<span>Sanctum Vault</span></div>
-    </a>
-    <a href="universe.html" class="nav-btn">← Universe Hub</a>
-  </header>
 
   <!-- ================= HOTSPOT CHIPS ================= -->
   <div class="hint-legend" id="hud-legend" style="opacity: 0; pointer-events: none;">
@@ -372,13 +508,13 @@
       <div class="drawer-prose" id="drawer-prose">Description</div>
 
       <div class="drawer-section">
-        <strong style="color: #fde68a;">Living Lore & Sacred Tradition:</strong>
-        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6;" id="drawer-tradition">Tradition text</p>
+        <strong style="color: #f59e0b;">Living Lore & Sacred Tradition:</strong>
+        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6;" id="drawer-tradition">Tradition text</p>
       </div>
 
       <div class="drawer-section">
-        <strong style="color: #6ee7b7;">Empirical / Architectural Analysis:</strong>
-        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6;" id="drawer-science">Science text</p>
+        <strong style="color: #10b981;">Empirical / Architectural Analysis:</strong>
+        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6;" id="drawer-science">Science text</p>
       </div>
     </div>
 
@@ -387,8 +523,39 @@
     </div>
   </div>
 
-  <!-- ================= THREE.JS SCRIPT ================= -->
+  <!-- ================= THREE.JS & THEME SCRIPT ================= -->
   <script>
+    /* Theme Toggle Synchronizer with Three.js Integration */
+    function updateThemeUI(theme) {
+      document.body.setAttribute('data-theme', theme);
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+
+      if (theme === 'light') {
+        icon.textContent = '☀️';
+        text.textContent = 'Light';
+        if (scene) {
+          scene.background = new THREE.Color(0xdbeafe);
+          scene.fog.color = new THREE.Color(0xdbeafe);
+        }
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = 'Dark';
+        if (scene) {
+          scene.background = new THREE.Color(0x020107);
+          scene.fog.color = new THREE.Color(0x06020f);
+        }
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      localStorage.setItem('itihas_theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
     const ARTIFACT_DATA = {
       flag: {
         badge: "badge-flag-pill",
@@ -438,8 +605,9 @@
       const canvas = document.getElementById("webgl-canvas");
 
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x020107);
-      scene.fog = new THREE.FogExp2(0x06020f, 0.022);
+      const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
+      scene.background = new THREE.Color(savedTheme === 'light' ? 0xdbeafe : 0x020107);
+      scene.fog = new THREE.FogExp2(savedTheme === 'light' ? 0xdbeafe : 0x06020f, 0.022);
 
       camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.copy(cameraPos);
@@ -451,7 +619,7 @@
       renderer.shadowMap.enabled = true;
 
       // Lights
-      const ambient = new THREE.AmbientLight(0x8b5cf6, 0.5);
+      const ambient = new THREE.AmbientLight(0x8b5cf6, 0.6);
       scene.add(ambient);
 
       const moon = new THREE.DirectionalLight(0xbae6fd, 0.9);
@@ -462,6 +630,9 @@
       buildRealTempleArchitecture();
       buildGoldenEmbers();
       setupControls();
+
+      // Apply initial UI theme state
+      updateThemeUI(savedTheme);
 
       animate();
     }
@@ -542,47 +713,38 @@
         roughness: 0.22
       });
 
-      // -------------------------------------------------------------
       // 1. MAIN SANCTUM: BADA DEULA (CUBOID BASE + TALL SHIKHARA)
-      // -------------------------------------------------------------
-      // High Cuboid Pedestal Base (Pitha & Bada)
       const mainBase = new THREE.Mesh(new THREE.BoxGeometry(11, 10, 11), stoneMat);
       mainBase.position.set(0, 5, 0);
       templeGroup.add(mainBase);
 
-      // Cornice band separating base and tower
       const cornice = new THREE.Mesh(new THREE.BoxGeometry(12, 1.2, 12), stoneTrim);
       cornice.position.set(0, 10.6, 0);
       templeGroup.add(cornice);
 
-      // Tower Section 1 (Vertical fluted cuboid body)
       const towerBody = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), stoneMat);
       towerBody.position.set(0, 15.6, 0);
       templeGroup.add(towerBody);
 
-      // Tower Section 2 (Curved taper toward crown)
       const towerTaper = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 5.8, 10, 8), stoneMat);
       towerTaper.position.set(0, 25.6, 0);
       templeGroup.add(towerTaper);
 
-      // Amalaka (Fluted Crown Disc)
       const amalaka = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 4.8, 1.6, 16), stoneTrim);
       amalaka.position.set(0, 31.4, 0);
       templeGroup.add(amalaka);
 
-      // Kalasha (Sacred Urn atop Amalaka)
       const kalasha = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 2.2, 1.8, 12), goldMat);
       kalasha.position.set(0, 33.1, 0);
       templeGroup.add(kalasha);
 
-      // Golden Nilachakra Disc
       const chakraGeo = new THREE.TorusGeometry(1.4, 0.25, 8, 16);
       chakraMesh = new THREE.Mesh(chakraGeo, goldMat);
       chakraMesh.position.set(0, 34.6, 0);
       chakraMesh.rotation.x = Math.PI / 2;
       templeGroup.add(chakraMesh);
 
-      // Patitapabana Flag (Flag Artifact - Clear, Large, Visible)
+      // Patitapabana Flag
       const flagGeo = new THREE.PlaneGeometry(5.2, 2.6, 10, 4);
       const flagMat = new THREE.MeshStandardMaterial({
         color: 0xef4444,
@@ -590,14 +752,11 @@
         roughness: 0.3
       });
       flagMesh = new THREE.Mesh(flagGeo, flagMat);
-      // Positioned cleanly on top without any circles covering it
       flagMesh.position.set(2.8, 35.8, 0);
       flagMesh.name = "flag";
       templeGroup.add(flagMesh);
 
-      // -------------------------------------------------------------
-      // 2. JAGAMOHANA ASSEMBLY HALL (CUBOID BASE + PYRAMID ROOF)
-      // -------------------------------------------------------------
+      // 2. JAGAMOHANA ASSEMBLY HALL
       const jagBase = new THREE.Mesh(new THREE.BoxGeometry(9, 6.5, 9), stoneMat);
       jagBase.position.set(0, 3.25, 10.5);
       templeGroup.add(jagBase);
@@ -607,9 +766,7 @@
       jagRoof.rotation.y = Math.PI / 4;
       templeGroup.add(jagRoof);
 
-      // -------------------------------------------------------------
-      // 3. NATAMANDAPA DANCING HALL (CUBOID BASE + STEPPED ROOF)
-      // -------------------------------------------------------------
+      // 3. NATAMANDAPA DANCING HALL
       const nataBase = new THREE.Mesh(new THREE.BoxGeometry(8, 5, 8), stoneMat);
       nataBase.position.set(0, 2.5, 19.5);
       templeGroup.add(nataBase);
@@ -619,9 +776,7 @@
       nataRoof.rotation.y = Math.PI / 4;
       templeGroup.add(nataRoof);
 
-      // -------------------------------------------------------------
-      // 4. ROSAGHARA KITCHENS (CUBOID PAVILION + STACKED POTS)
-      // -------------------------------------------------------------
+      // 4. ROSAGHARA KITCHENS
       const kitchenBuilding = new THREE.Mesh(new THREE.BoxGeometry(9, 4.5, 8), stoneMat);
       kitchenBuilding.position.set(-16, 2.25, 6);
       kitchenBuilding.name = "prasad";
@@ -632,7 +787,6 @@
       kitchenRoof.name = "prasad";
       templeGroup.add(kitchenRoof);
 
-      // Stack of Earthen Cooking Pots (Mahaprasad Artifact)
       for (let p = 0; p < 3; p++) {
         const pot = new THREE.Mesh(
           new THREE.CylinderGeometry(0.85 - p * 0.12, 0.95 - p * 0.12, 0.75, 8),
@@ -643,9 +797,7 @@
         templeGroup.add(pot);
       }
 
-      // -------------------------------------------------------------
-      // 5. SINGHADWARA LION'S GATE (CUBOID PILLARS + OPEN ARCH)
-      // -------------------------------------------------------------
+      // 5. SINGHADWARA LION'S GATE
       const gateGroup = new THREE.Group();
       gateGroup.name = "gate";
 
@@ -668,9 +820,7 @@
       gateGroup.add(gateCrown);
       templeGroup.add(gateGroup);
 
-      // -------------------------------------------------------------
-      // 6. MAIN COURTYARD PLINTH (MEGHANADA PACHERI)
-      // -------------------------------------------------------------
+      // 6. MAIN COURTYARD PLINTH
       const courtyard = new THREE.Mesh(
         new THREE.BoxGeometry(52, 1, 68),
         new THREE.MeshStandardMaterial({ color: 0x140b20, roughness: 0.92 })
@@ -884,7 +1034,7 @@
         });
       }
 
-      // Flag Flutters Smoothly in 3D
+      // Flag Flutter
       if (flagMesh && flagMesh.geometry) {
         const pos = flagMesh.geometry.attributes.position;
         for (let i = 0; i < pos.count; i++) {
