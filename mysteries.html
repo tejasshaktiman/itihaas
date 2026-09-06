@@ -14,8 +14,8 @@
     }
 
     :root {
-      --bg-dark: #010003;
-      --surface-glass: rgba(10, 5, 18, 0.92);
+      --bg-dark: #070a14;
+      --surface-glass: rgba(10, 15, 29, 0.92);
       --surface-card: #0f172a;
       --nav-bg: #050811;
       --border-subtle: #1e293b;
@@ -37,9 +37,9 @@
 
     /* Light Mode Overrides */
     [data-theme="light"] {
-      --bg-dark: #f1f5f9;
-      --surface-glass: rgba(255, 255, 255, 0.92);
-      --surface-card: #e2e8f0;
+      --bg-dark: #e2e8f0;
+      --surface-glass: rgba(255, 255, 255, 0.94);
+      --surface-card: #f1f5f9;
       --nav-bg: #e2e8f0;
       --border-subtle: #cbd5e1;
 
@@ -69,28 +69,15 @@
       display: block;
     }
 
-    /* Cinematic letterbox bars */
-    .cinema-bar-top, .cinema-bar-bottom {
-      position: fixed;
-      left: 0;
-      right: 0;
-      height: 44px;
-      background: #000000;
-      z-index: 30;
-      pointer-events: none;
-    }
-    .cinema-bar-top { top: 0; }
-    .cinema-bar-bottom { bottom: 0; }
-
     /* =========================================================
-       1. GLOBAL UNIFIED HEADER WITH 5 HIGHWAY BUTTONS
+       1. GLOBAL UNIFIED HEADER (FLUSH TO TOP - NO BLACK STRIP)
        ========================================================= */
     header {
       position: fixed;
-      top: 44px;
+      top: 0;
       left: 0;
       right: 0;
-      height: 56px;
+      height: 64px;
       background: var(--surface-glass);
       border-bottom: 1px solid var(--border-subtle);
       backdrop-filter: blur(12px);
@@ -98,7 +85,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      z-index: 50;
+      z-index: 100;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
 
@@ -140,7 +127,6 @@
       margin-left: 5px;
     }
 
-    /* 5 Navigation Highway Links */
     nav.nav-bar {
       display: flex;
       background: var(--nav-bg);
@@ -176,7 +162,6 @@
       box-shadow: 0 2px 8px var(--amber-glow);
     }
 
-    /* User Profile & Theme Toggle */
     .header-user {
       display: flex;
       align-items: center;
@@ -237,14 +222,14 @@
     #cloud-overlay {
       position: fixed;
       inset: 0;
-      z-index: 40;
+      z-index: 80;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      background: radial-gradient(circle at center, rgba(16, 6, 30, 0.4) 0%, rgba(2, 0, 6, 0.95) 75%);
-      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      background: radial-gradient(circle at center, rgba(16, 6, 30, 0.4) 0%, rgba(4, 7, 18, 0.95) 75%);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     #cloud-overlay.parted {
@@ -255,7 +240,7 @@
     .unveil-prompt {
       text-align: center;
       transition: transform 1s ease, opacity 0.8s ease;
-      z-index: 45;
+      z-index: 85;
     }
 
     #cloud-overlay.parted .unveil-prompt {
@@ -278,12 +263,6 @@
       border-radius: 30px;
       margin-bottom: 16px;
       box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
-      animation: pulseGlow 2.5s infinite alternate;
-    }
-
-    @keyframes pulseGlow {
-      from { box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
-      to { box-shadow: 0 0 30px rgba(245, 158, 11, 0.6); }
     }
 
     .prompt-title {
@@ -305,9 +284,9 @@
     /* Hotspot Navigation Chips */
     .hint-legend {
       position: fixed;
-      bottom: 58px;
-      left: 26px;
-      z-index: 35;
+      bottom: 24px;
+      left: 24px;
+      z-index: 50;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -319,15 +298,15 @@
       align-items: center;
       gap: 10px;
       background: var(--surface-glass);
-      border: 1px solid rgba(168, 85, 247, 0.35);
-      padding: 7px 14px;
+      border: 1px solid var(--border-subtle);
+      padding: 8px 16px;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 600;
       color: var(--text-main);
       cursor: pointer;
       backdrop-filter: blur(10px);
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
     }
 
     .hotspot-chip:hover {
@@ -346,18 +325,18 @@
        ========================================================= */
     #mystery-drawer {
       position: fixed;
-      top: 110px;
-      bottom: 64px;
+      top: 84px;
+      bottom: 24px;
       right: -460px;
       width: 410px;
       max-width: 90vw;
       background: var(--surface-glass);
-      border: 1px solid rgba(168, 85, 247, 0.5);
+      border: 1px solid var(--border-subtle);
       border-radius: 16px;
       padding: 26px;
       backdrop-filter: blur(20px);
-      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
-      z-index: 38;
+      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.7);
+      z-index: 60;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -366,7 +345,7 @@
     }
 
     #mystery-drawer.open {
-      right: 26px;
+      right: 24px;
     }
 
     .drawer-close {
@@ -443,9 +422,6 @@
 </head>
 <body data-theme="dark">
 
-  <div class="cinema-bar-top"></div>
-  <div class="cinema-bar-bottom"></div>
-
   <!-- ================= 1. GLOBAL HEADER ================= -->
   <header>
     <a href="index.html" class="brand-link">
@@ -482,12 +458,12 @@
     <div class="unveil-prompt">
       <div class="prompt-tag">✦ SACRED ENIGMAS VAULT</div>
       <h1 class="prompt-title">The Mysteries of Puri</h1>
-      <p class="prompt-sub">Click anywhere to part the 360° storm</p>
+      <p class="prompt-sub">Click anywhere to reveal the sanctum</p>
     </div>
   </div>
 
   <!-- ================= HOTSPOT CHIPS ================= -->
-  <div class="hint-legend" id="hud-legend" style="opacity: 0; pointer-events: none;">
+  <div class="hint-legend" id="hud-legend">
     <div class="hotspot-chip" onclick="focusArtifact('flag')">
       <span class="dot-flag"></span> 01. The Reverse Wind Flag (Patitapabana)[cite: 1, 2, 3]
     </div>
@@ -525,7 +501,6 @@
 
   <!-- ================= THREE.JS & THEME SCRIPT ================= -->
   <script>
-    /* Theme Toggle Synchronizer with Three.js Integration */
     function updateThemeUI(theme) {
       document.body.setAttribute('data-theme', theme);
       const icon = document.getElementById('theme-icon');
@@ -542,8 +517,8 @@
         icon.textContent = '🌙';
         text.textContent = 'Dark';
         if (scene) {
-          scene.background = new THREE.Color(0x020107);
-          scene.fog.color = new THREE.Color(0x06020f);
+          scene.background = new THREE.Color(0x070a14);
+          scene.fog.color = new THREE.Color(0x070a14);
         }
       }
     }
@@ -591,12 +566,10 @@
     let embersMesh;
     let isDispersed = false;
 
-    // Cinematic Camera coordinates
-    let cameraTarget = new THREE.Vector3(0, 11, 0);
-    let cameraPos = new THREE.Vector3(0, 5, 26);
-    let destinationPos = new THREE.Vector3(0, 20, 68);
+    // Direct, unobstructed camera positioning
+    let cameraTarget = new THREE.Vector3(0, 16, 0);
+    let cameraPos = new THREE.Vector3(0, 22, 65);
 
-    // Mouse Drag Orbit
     let isDragging = false;
     let prevMouseX = 0;
     let prevMouseY = 0;
@@ -606,8 +579,11 @@
 
       scene = new THREE.Scene();
       const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
-      scene.background = new THREE.Color(savedTheme === 'light' ? 0xdbeafe : 0x020107);
-      scene.fog = new THREE.FogExp2(savedTheme === 'light' ? 0xdbeafe : 0x06020f, 0.022);
+      const bgHex = savedTheme === 'light' ? 0xdbeafe : 0x070a14;
+      scene.background = new THREE.Color(bgHex);
+      
+      // Gentle atmospheric fog (not pitch black or blindingly thick)
+      scene.fog = new THREE.FogExp2(bgHex, 0.005);
 
       camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.copy(cameraPos);
@@ -618,28 +594,27 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
 
-      // Lights
-      const ambient = new THREE.AmbientLight(0x8b5cf6, 0.6);
+      // Clean, bright scene lighting
+      const ambient = new THREE.AmbientLight(0xffffff, 0.85);
       scene.add(ambient);
 
-      const moon = new THREE.DirectionalLight(0xbae6fd, 0.9);
-      moon.position.set(40, 75, 30);
-      scene.add(moon);
+      const sun = new THREE.DirectionalLight(0xfde68a, 1.2);
+      sun.position.set(50, 80, 40);
+      scene.add(sun);
+
+      const fill = new THREE.DirectionalLight(0x38bdf8, 0.6);
+      fill.position.set(-50, 40, -40);
+      scene.add(fill);
 
       buildVolumetricClouds();
       buildRealTempleArchitecture();
       buildGoldenEmbers();
       setupControls();
 
-      // Apply initial UI theme state
       updateThemeUI(savedTheme);
-
       animate();
     }
 
-    // =========================================================
-    // A. 360° VOLUMETRIC CLOUDS
-    // =========================================================
     function buildVolumetricClouds() {
       cloudGroup = new THREE.Group();
       
@@ -648,9 +623,9 @@
       canvas.height = 128;
       const ctx = canvas.getContext("2d");
       const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-      grad.addColorStop(0, "rgba(168, 85, 247, 0.9)");
-      grad.addColorStop(0.35, "rgba(88, 28, 135, 0.5)");
-      grad.addColorStop(0.7, "rgba(15, 7, 26, 0.25)");
+      grad.addColorStop(0, "rgba(245, 158, 11, 0.85)");
+      grad.addColorStop(0.4, "rgba(147, 51, 234, 0.4)");
+      grad.addColorStop(0.8, "rgba(15, 23, 42, 0.15)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 128, 128);
@@ -659,28 +634,28 @@
       const cloudMat = new THREE.SpriteMaterial({
         map: cloudTex,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.85,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
 
-      for (let i = 0; i < 160; i++) {
+      for (let i = 0; i < 90; i++) {
         const sprite = new THREE.Sprite(cloudMat);
         const phi = Math.acos(2 * Math.random() - 1);
         const theta = 2 * Math.PI * Math.random();
-        const rad = Math.random() * 20 + 5;
+        const rad = Math.random() * 25 + 10;
 
         sprite.position.set(
           rad * Math.sin(phi) * Math.cos(theta),
-          rad * Math.sin(phi) * Math.sin(theta) + 9,
-          rad * Math.cos(phi) + 16
+          rad * Math.sin(phi) * Math.sin(theta) + 16,
+          rad * Math.cos(phi) + 20
         );
 
-        const scale = Math.random() * 18 + 14;
+        const scale = Math.random() * 16 + 12;
         sprite.scale.set(scale, scale, 1);
 
         sprite.userData = {
-          velocity: sprite.position.clone().normalize().multiplyScalar(Math.random() * 1.9 + 1.3)
+          velocity: sprite.position.clone().normalize().multiplyScalar(Math.random() * 2.2 + 1.5)
         };
 
         cloudGroup.add(sprite);
@@ -690,30 +665,27 @@
       scene.add(cloudGroup);
     }
 
-    // =========================================================
-    // B. REALISTIC TEMPLE ARCHITECTURE (CUBOIDS + SPIRES)
-    // =========================================================
     function buildRealTempleArchitecture() {
       templeGroup = new THREE.Group();
 
       const stoneMat = new THREE.MeshStandardMaterial({
-        color: 0x2b1c42,
-        roughness: 0.85,
-        metalness: 0.15
+        color: 0x473b56,
+        roughness: 0.7,
+        metalness: 0.2
       });
 
       const stoneTrim = new THREE.MeshStandardMaterial({
-        color: 0x3d275e,
-        roughness: 0.8
+        color: 0x6b5b82,
+        roughness: 0.65
       });
 
       const goldMat = new THREE.MeshStandardMaterial({
         color: 0xf59e0b,
-        metalness: 0.88,
-        roughness: 0.22
+        metalness: 0.85,
+        roughness: 0.2
       });
 
-      // 1. MAIN SANCTUM: BADA DEULA (CUBOID BASE + TALL SHIKHARA)
+      // 1. MAIN SANCTUM: BADA DEULA (Tower & Shikhara)
       const mainBase = new THREE.Mesh(new THREE.BoxGeometry(11, 10, 11), stoneMat);
       mainBase.position.set(0, 5, 0);
       templeGroup.add(mainBase);
@@ -744,7 +716,7 @@
       chakraMesh.rotation.x = Math.PI / 2;
       templeGroup.add(chakraMesh);
 
-      // Patitapabana Flag
+      // Red Patitapabana Flag
       const flagGeo = new THREE.PlaneGeometry(5.2, 2.6, 10, 4);
       const flagMat = new THREE.MeshStandardMaterial({
         color: 0xef4444,
@@ -823,12 +795,12 @@
       // 6. MAIN COURTYARD PLINTH
       const courtyard = new THREE.Mesh(
         new THREE.BoxGeometry(52, 1, 68),
-        new THREE.MeshStandardMaterial({ color: 0x140b20, roughness: 0.92 })
+        new THREE.MeshStandardMaterial({ color: 0x221833, roughness: 0.9 })
       );
       courtyard.position.y = -0.5;
       templeGroup.add(courtyard);
 
-      // Golden Lanterns
+      // Warm Golden Spotlights
       const lanternPositions = [
         [0, 31, 0],
         [0, 8, 14],
@@ -837,7 +809,7 @@
       ];
 
       lanternPositions.forEach(pos => {
-        const pLight = new THREE.PointLight(0xf59e0b, 0, 40);
+        const pLight = new THREE.PointLight(0xf59e0b, 1.5, 35);
         pLight.position.set(pos[0], pos[1], pos[2]);
         templeGroup.add(pLight);
         goldenLights.push(pLight);
@@ -846,9 +818,6 @@
       scene.add(templeGroup);
     }
 
-    // =========================================================
-    // C. GOLDEN INCENSE EMBERS
-    // =========================================================
     function buildGoldenEmbers() {
       const emberGeo = new THREE.BufferGeometry();
       const count = 100;
@@ -873,62 +842,17 @@
       scene.add(embersMesh);
     }
 
-    // =========================================================
-    // D. 360° DISPERSAL & CINEMATIC CRANE
-    // =========================================================
     function trigger360CloudDispersal() {
       if (isDispersed) return;
       isDispersed = true;
 
       document.getElementById("cloud-overlay").classList.add("parted");
-      document.getElementById("hud-legend").style.opacity = "1";
-      document.getElementById("hud-legend").style.pointerEvents = "auto";
 
       cloudParticles.forEach(p => {
         p.userData.dispersing = true;
       });
-
-      let currentFog = scene.fog.density;
-      const fogTimer = setInterval(() => {
-        currentFog -= 0.0006;
-        if (currentFog <= 0.006) {
-          scene.fog.density = 0.006;
-          clearInterval(fogTimer);
-        } else {
-          scene.fog.density = currentFog;
-        }
-      }, 40);
-
-      // Camera Crane Lift
-      let progress = 0;
-      const startCam = camera.position.clone();
-      const endCam = destinationPos.clone();
-
-      const craneInterval = setInterval(() => {
-        progress += 0.015;
-        camera.position.lerpVectors(startCam, endCam, easeOutCubic(progress));
-        camera.lookAt(cameraTarget);
-        if (progress >= 1) clearInterval(craneInterval);
-      }, 16);
-
-      // Ignite golden lights
-      setTimeout(() => {
-        let intensity = 0;
-        const lightTimer = setInterval(() => {
-          intensity += 0.08;
-          goldenLights.forEach(l => l.intensity = intensity * 1.8);
-          if (intensity >= 1.2) clearInterval(lightTimer);
-        }, 40);
-      }, 1800);
     }
 
-    function easeOutCubic(x) {
-      return 1 - Math.pow(1 - x, 3);
-    }
-
-    // =========================================================
-    // E. CONTROLS & ARTIFACT SELECTION
-    // =========================================================
     function setupControls() {
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
@@ -943,7 +867,7 @@
       window.addEventListener("mouseup", () => { isDragging = false; });
 
       window.addEventListener("mousemove", (e) => {
-        if (!isDragging || !templeGroup || !isDispersed) return;
+        if (!isDragging || !templeGroup) return;
         const deltaX = e.clientX - prevMouseX;
         templeGroup.rotation.y += deltaX * 0.006;
         prevMouseX = e.clientX;
@@ -951,7 +875,7 @@
       });
 
       window.addEventListener("click", (e) => {
-        if (!isDispersed || e.target.closest("#mystery-drawer") || e.target.closest("header") || e.target.closest(".hint-legend")) return;
+        if (e.target.closest("#mystery-drawer") || e.target.closest("header") || e.target.closest(".hint-legend") || e.target.closest("#cloud-overlay")) return;
 
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -1012,29 +936,26 @@
       document.getElementById("mystery-drawer").classList.remove("open");
     }
 
-    // =========================================================
-    // F. ANIMATION LOOP
-    // =========================================================
     let clock = new THREE.Clock();
     function animate() {
       requestAnimationFrame(animate);
 
       const t = clock.getElapsedTime();
 
-      // Cloud 360 Dispersal
+      // Cloud 360 dispersal
       if (cloudParticles.length > 0) {
         cloudParticles.forEach(p => {
           if (p.userData.dispersing) {
             p.position.add(p.userData.velocity);
-            p.material.opacity = Math.max(0, p.material.opacity - 0.014);
-            p.scale.multiplyScalar(1.025);
+            p.material.opacity = Math.max(0, p.material.opacity - 0.015);
+            p.scale.multiplyScalar(1.02);
           } else {
             p.position.y += Math.sin(t + p.position.x) * 0.01;
           }
         });
       }
 
-      // Flag Flutter
+      // Smooth wave for Patitapabana flag
       if (flagMesh && flagMesh.geometry) {
         const pos = flagMesh.geometry.attributes.position;
         for (let i = 0; i < pos.count; i++) {
@@ -1045,7 +966,7 @@
         flagMesh.geometry.attributes.position.needsUpdate = true;
       }
 
-      // Golden Embers Ascent
+      // Floating temple embers
       if (embersMesh) {
         const pos = embersMesh.geometry.attributes.position;
         for (let i = 1; i < pos.count * 3; i += 3) {
