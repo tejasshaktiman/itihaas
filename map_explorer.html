@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ITIHAS — Subcontinental Vector Map Explorer</title>
+  <title>ITIHAS — Subcontinental Geopolitical Map Explorer</title>
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -12,18 +12,15 @@
     }
 
     :root {
-      --bg-dark: #050811;
+      --bg-dark: #040711;
       --panel-dark: #0a0f1d;
       --card-inner: #11182c;
-      --surface-card: #0f172a;
-      --nav-bg: #050811;
       --border-subtle: #1e293b;
-      --border-hover: #334155;
 
       --amber-500: #f59e0b;
-      --amber-600: #d97706;
       --amber-glow: rgba(245, 158, 11, 0.35);
       --sky-400: #38bdf8;
+      --emerald-400: #34d399;
 
       --text-white: #ffffff;
       --text-main: #f1f5f9;
@@ -31,22 +28,6 @@
       --text-dim: #64748b;
 
       --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    /* Light Theme Overrides */
-    [data-theme="light"] {
-      --bg-dark: #f8fafc;
-      --panel-dark: #ffffff;
-      --card-inner: #f1f5f9;
-      --surface-card: #e2e8f0;
-      --nav-bg: #e2e8f0;
-      --border-subtle: #cbd5e1;
-      --border-hover: #94a3b8;
-
-      --text-white: #0f172a;
-      --text-main: #1e293b;
-      --text-muted: #475569;
-      --text-dim: #64748b;
     }
 
     body {
@@ -57,26 +38,23 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(217, 119, 6, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.06) 0%, transparent 45%);
     }
 
-    /* =========================================================
-       1. GLOBAL UNIFIED HEADER WITH 5 HIGHWAY BUTTONS
-       ========================================================= */
+    /* Top Bar */
     header {
       width: 100%;
-      height: 64px;
-      background: var(--panel-dark);
+      height: 56px;
+      background: rgba(10, 15, 29, 0.94);
       border-bottom: 1px solid var(--border-subtle);
       backdrop-filter: blur(12px);
       padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      transition: background 0.3s ease, border-color 0.3s ease;
+      z-index: 50;
     }
 
     .brand-link {
@@ -88,24 +66,22 @@
     }
 
     .brand-glyph {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--amber-500), #b45309);
       color: #fff;
       font-size: 15px;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
+      border-radius: 7px;
       box-shadow: 0 2px 10px var(--amber-glow);
     }
 
     .brand-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text-white);
     }
 
     .brand-title span {
@@ -117,109 +93,39 @@
       margin-left: 5px;
     }
 
-    /* 5 Navigation Highway Links */
-    nav.nav-bar {
+    .nav-actions {
       display: flex;
-      background: var(--nav-bg);
-      padding: 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border-subtle);
-      gap: 2px;
-      transition: background 0.3s ease, border-color 0.3s ease;
+      gap: 10px;
     }
 
-    .nav-item {
-      background: transparent;
-      border: none;
+    .nav-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
       font-size: 12px;
       font-weight: 600;
       padding: 6px 14px;
       border-radius: 6px;
-      cursor: pointer;
       text-decoration: none;
-      transition: all 0.2s ease;
-      white-space: nowrap;
+      transition: all 0.2s;
     }
 
-    .nav-item:hover {
-      color: var(--text-white);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .nav-item.active {
-      background: var(--amber-600);
-      color: #ffffff;
-      box-shadow: 0 2px 8px var(--amber-glow);
-    }
-
-    /* User Profile & Theme Toggle */
-    .header-user {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .theme-pill {
-      background: var(--surface-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .theme-pill:hover {
-      border-color: var(--amber-500);
+    .nav-btn:hover {
+      background: #1e293b;
       color: var(--text-white);
     }
 
-    .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-left: 12px;
-      border-left: 1px solid var(--border-subtle);
-    }
-
-    .user-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--amber-500), #ef4444);
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .user-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    /* =========================================================
-       2. WORKSPACE STAGE
-       ========================================================= */
+    /* Main Workspace */
     .workspace-stage {
       flex: 1;
       display: grid;
-      grid-template-columns: 380px 1fr;
+      grid-template-columns: 400px 1fr;
       gap: 20px;
       padding: 16px 24px 20px 24px;
       overflow: hidden;
     }
 
+    /* Left Territorial Inspector */
     .inspector-panel {
       background: var(--panel-dark);
       border: 1px solid var(--border-subtle);
@@ -228,14 +134,31 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      transition: background 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+    }
+
+    .inspector-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-500);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
     }
 
     .empire-name {
       font-size: 24px;
       font-weight: 900;
-      color: var(--text-white);
+      color: #ffffff;
+      line-height: 1.2;
       margin-bottom: 4px;
     }
 
@@ -251,7 +174,7 @@
     .empire-narrative {
       font-size: 13px;
       line-height: 1.65;
-      color: var(--text-muted);
+      color: #cbd5e1;
       margin-bottom: 18px;
     }
 
@@ -260,14 +183,16 @@
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
       padding: 12px;
+      margin-bottom: 18px;
       font-size: 12px;
       color: var(--text-dim);
     }
 
     .territory-stats strong {
-      color: var(--text-white);
+      color: #ffffff;
       display: block;
       margin-bottom: 3px;
+      font-size: 12.5px;
     }
 
     .jump-btn {
@@ -285,16 +210,16 @@
       text-transform: uppercase;
       cursor: pointer;
       display: inline-block;
-      margin-top: 14px;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
 
     .jump-btn:hover {
       background: linear-gradient(135deg, #f59e0b, #b45309);
-      box-shadow: 0 4px 16px var(--amber-glow);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
       transform: translateY(-1px);
     }
 
+    /* Right Map Display */
     .map-display-panel {
       background: var(--panel-dark);
       border: 1px solid var(--border-subtle);
@@ -303,44 +228,104 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      transition: background 0.3s ease, border-color 0.3s ease;
+      overflow: hidden;
     }
 
-    .map-viewport {
+    .map-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .map-header h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .map-header span {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* SVG Map Stage */
+    .svg-container {
       flex: 1;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
-    /* PURE NATIVE VECTOR MAP STYLING */
-    svg#native-india-svg {
+    svg#india-geopolitics {
       width: 100%;
       height: 100%;
-      max-height: 60vh;
+      max-height: 62vh;
+      overflow: visible;
     }
 
-    /* Individual State Polygons */
-    .state-region {
-      fill: #1e293b;
-      stroke: var(--panel-dark);
+    /* Real India Coastlines & Topography (Layer 1) */
+    .india-landmass {
+      fill: #09101f;
+      stroke: #334155;
+      stroke-width: 1.6;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.85));
+    }
+
+    .river-path {
+      fill: none;
+      stroke: #1e3a8a;
       stroke-width: 1.2;
+      opacity: 0.55;
+    }
+
+    .sri-lanka-island {
+      fill: #09101f;
+      stroke: #334155;
+      stroke-width: 1.4;
+    }
+
+    /* Semi-Transparent Dynamic Territorial Polygons (Layer 2) */
+    .empire-territory {
       cursor: pointer;
-      transition: fill 0.3s ease, filter 0.2s ease;
+      fill-opacity: 0.52;
+      stroke-width: 1.6;
+      transition: fill-opacity 0.25s ease, stroke-width 0.25s ease, filter 0.25s ease;
     }
 
-    [data-theme="light"] .state-region {
-      stroke: #ffffff;
+    .empire-territory:hover {
+      fill-opacity: 0.78;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
     }
 
-    .state-region:hover {
-      filter: brightness(1.35) drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+    .empire-territory.active {
+      fill-opacity: 0.82;
+      stroke-width: 2.8;
+      stroke: #ffffff !important;
+      filter: drop-shadow(0 0 14px var(--amber-glow));
     }
 
+    .territory-label {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      fill: #ffffff;
+      text-anchor: middle;
+      pointer-events: none;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+    }
+
+    /* Timeline Scrubber */
     .timeline-scrubber-bar {
       margin-top: 12px;
-      background: var(--card-inner);
+      background: #070b16;
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
       padding: 12px 18px;
@@ -349,11 +334,16 @@
     .scrubber-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 8px;
+    }
+
+    .scrubber-header span {
       font-size: 11px;
       font-weight: 700;
       color: var(--amber-500);
       text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .slider-ticks {
@@ -367,351 +357,437 @@
 
     .slider-ticks span {
       cursor: pointer;
+      transition: color 0.2s;
     }
 
-    .slider-ticks span.active {
-      color: var(--amber-500);
+    .slider-ticks span:hover, .slider-ticks span.active {
+      color: #ffffff;
       font-weight: 800;
     }
 
     input[type=range] {
       width: 100%;
-      background: var(--border-subtle);
+      -webkit-appearance: none;
+      background: #1e293b;
       height: 6px;
       border-radius: 4px;
       outline: none;
     }
 
-    @media (max-width: 900px) {
-      nav.nav-bar { display: none; }
-      .workspace-stage { grid-template-columns: 1fr; }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--amber-500);
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--amber-glow);
     }
   </style>
 </head>
-<body data-theme="dark">
+<body>
 
-  <!-- ================= 1. GLOBAL HEADER ================= -->
   <header>
     <a href="index.html" class="brand-link">
       <div class="brand-glyph">इ</div>
-      <div class="brand-title">ITIHAS<span>Vector Map Explorer</span></div>
+      <div class="brand-title">ITIHAS<span>Subcontinental Map</span></div>
     </a>
-
-    <!-- The 5 Navigation Highway Links -->
-    <nav class="nav-bar">
-      <a href="index.html" class="nav-item">Home</a>
-      <a href="universe.html" class="nav-item">Guided Journey</a>
-      <a href="map-explorer.html" class="nav-item active">Map Explorer</a>
-      <a href="mysteries.html" class="nav-item">Mysteries of India</a>
-      <a href="simulation.html" class="nav-item">Roleplay</a>
-    </nav>
-
-    <!-- User Profile & Theme Toggle -->
-    <div class="header-user">
-      <button class="theme-pill" id="theme-toggle-btn" onclick="toggleTheme()">
-        <span id="theme-icon">🌙</span>
-        <span id="theme-text">Dark</span>
-      </button>
-      <div class="user-pill">
-        <div class="user-avatar">T</div>
-        <span class="user-name">Tejas Pal</span>
-      </div>
+    <div class="nav-actions">
+      <a href="universe.html" class="nav-btn">Universe Hub</a>
+      <a href="timeline.html" class="nav-btn">Chronicle Timeline</a>
+      <a href="index.html" class="nav-btn">Home</a>
     </div>
   </header>
 
   <div class="workspace-stage">
     
-    <!-- LEFT: INSPECTOR -->
+    <!-- LEFT: TERRITORIAL INSPECTOR -->
     <div class="inspector-panel">
       <div>
-        <h1 class="empire-name" id="insp-title">Select an Empire</h1>
-        <span class="epoch-badge" id="insp-epoch">Temporal Epoch</span>
-        <p class="empire-narrative" id="insp-desc">Click any highlighted territory on the map to inspect geopolitical power and borders[cite: 1].</p>
+        <div class="inspector-badge" id="insp-badge">ACTIVE SOVEREIGNTY</div>
+        <h1 class="empire-name" id="insp-title">Mughal Empire</h1>
+        <span class="epoch-badge" id="insp-epoch">c. 1658 CE • Aurangzeb's Reign</span>
+
+        <p class="empire-narrative" id="insp-desc">
+          Gunpowder imperial dominance across North India, the Gangetic plains, and Gujarat, pressing downward into the Deccan plateau[cite: 1, 5].
+        </p>
+
         <div class="territory-stats" id="insp-stats">
-          <strong>Key Hubs:</strong> Select a territory<br>
-          <strong>Frontiers:</strong> Active boundaries
+          <strong>Imperial Strongholds:</strong> Delhi, Agra, Lahore, Daulatabad[cite: 1, 5]<br>
+          <strong>Contested Frontiers:</strong> Western Ghats (Marathas), Golconda & Bijapur
         </div>
       </div>
-      <a href="timeline.html" class="jump-btn" id="insp-jump">Launch Chronicle Timeline ➔</a>
+
+      <a href="timeline.html?topic=mughal-empire" class="jump-btn" id="insp-jump">
+        Launch Full Empire Timeline ➔
+      </a>
     </div>
 
-    <!-- RIGHT: PURE VECTOR REGIONS -->
+    <!-- RIGHT: SVG REALISTIC MAP CANVAS -->
     <div class="map-display-panel">
-      <div class="map-viewport">
-        <svg id="native-india-svg" viewBox="0 0 400 440">
-          <!-- KASHMIR -->
-          <path id="JK" class="state-region" d="M 130,20 L 160,20 L 180,45 L 160,75 L 135,75 L 120,50 Z" onclick="clickRegion('JK')" />
+      <div class="map-header">
+        <h2 id="map-header-title">Subcontinental Geopolitics (c. 1658 CE)</h2>
+        <span>Click any semi-transparent territory to inspect</span>
+      </div>
+
+      <div class="svg-container">
+        <!-- Rebuilt Realistic Coordinate Space (520x580) -->
+        <svg id="india-geopolitics" viewBox="0 0 520 580">
           
-          <!-- PUNJAB / HARYANA / HIMACHAL -->
-          <path id="PB" class="state-region" d="M 120,50 L 135,75 L 155,75 L 145,110 L 115,100 Z" onclick="clickRegion('PB')" />
-          
-          <!-- RAJASTHAN -->
-          <path id="RJ" class="state-region" d="M 80,105 L 115,100 L 140,115 L 135,160 L 95,165 L 75,135 Z" onclick="clickRegion('RJ')" />
-          
-          <!-- GUJARAT -->
-          <path id="GJ" class="state-region" d="M 50,155 L 85,155 L 105,175 L 100,210 L 65,210 L 45,185 Z" onclick="clickRegion('GJ')" />
-          
-          <!-- UTTAR PRADESH -->
-          <path id="UP" class="state-region" d="M 145,110 L 195,115 L 225,145 L 190,170 L 140,145 L 140,115 Z" onclick="clickRegion('UP')" />
-          
-          <!-- BIHAR & BENGAL -->
-          <path id="WB" class="state-region" d="M 225,145 L 265,140 L 275,190 L 245,210 L 210,185 L 225,145 Z" onclick="clickRegion('WB')" />
-          
-          <!-- ASSAM & NORTHEAST -->
-          <path id="NE" class="state-region" d="M 275,140 L 330,120 L 345,150 L 310,180 L 275,170 Z" onclick="clickRegion('NE')" />
-          
-          <!-- CENTRAL INDIA (MADHYA PRADESH) -->
-          <path id="MP" class="state-region" d="M 105,175 L 140,145 L 190,170 L 210,185 L 195,230 L 125,225 Z" onclick="clickRegion('MP')" />
-          
-          <!-- MAHARASHTRA -->
-          <path id="MH" class="state-region" d="M 100,210 L 125,225 L 195,230 L 175,275 L 110,270 L 95,230 Z" onclick="clickRegion('MH')" />
-          
-          <!-- DECCAN / TELANGANA & ANDHRA -->
-          <path id="AP" class="state-region" d="M 175,235 L 215,225 L 230,285 L 180,340 L 155,295 L 175,235 Z" onclick="clickRegion('AP')" />
-          
-          <!-- KARNATAKA -->
-          <path id="KA" class="state-region" d="M 110,270 L 155,275 L 160,345 L 130,365 L 115,310 Z" onclick="clickRegion('KA')" />
-          
-          <!-- TAMIL NADU & KERALA (DEEP SOUTH) -->
-          <path id="TN" class="state-region" d="M 130,365 L 175,340 L 170,410 L 140,430 L 125,395 Z" onclick="clickRegion('TN')" />
+          <!-- ================= LAYER 1: ACCURATE GEOGRAPHY ================= -->
+          <g id="base-geography">
+            <!-- 
+              Detailed India Boundary Path:
+              - Kashmir/Himalayan crown (Top)
+              - Indus / Punjab Northwest curve
+              - Rann of Kutch & Kathiawar Gujarat Peninsula
+              - Konkan / Malabar western coast down to Kanyakumari
+              - Coromandel / Andhra / Odisha eastern coastline
+              - Bengal Delta & Assam Northeast arc
+            -->
+            <path class="india-landmass" d="
+              M 225,20 
+              C 240,15 255,25 265,40 
+              C 285,55 315,65 340,75 
+              C 365,85 410,105 440,120 
+              C 430,135 415,145 395,150 
+              C 375,155 355,160 345,175 
+              C 340,190 350,210 360,225 
+              C 350,235 330,240 315,250 
+              C 300,270 290,300 280,335 
+              C 270,370 255,420 240,460 
+              C 230,490 220,515 210,535 
+              C 205,530 195,505 185,475 
+              C 175,445 160,395 155,350 
+              C 150,305 140,265 130,245 
+              C 115,245 100,248 85,250 
+              C 70,252 60,240 70,230 
+              C 85,215 105,215 118,210 
+              C 110,195 90,190 80,180 
+              C 70,170 85,155 105,150 
+              C 120,145 135,135 145,115 
+              C 155,95 165,70 180,50 
+              C 195,30 210,25 225,20 
+              Z" 
+            />
+
+            <!-- Sri Lanka reference -->
+            <path class="sri-lanka-island" d="M 230,520 C 238,515 246,525 245,540 C 242,555 232,555 228,545 C 224,535 225,525 230,520 Z" />
+
+            <!-- Major Subcontinental Rivers -->
+            <!-- Indus / Punjab Tributaries -->
+            <path class="river-path" d="M 185,50 Q 150,110 105,180" />
+            <!-- Ganga / Yamuna River Course -->
+            <path class="river-path" d="M 220,95 Q 275,130 350,185" />
+            <!-- Narmada / Tapti River -->
+            <path class="river-path" d="M 125,225 Q 185,225 250,220" />
+            <!-- Godavari / Krishna River Course -->
+            <path class="river-path" d="M 140,290 Q 210,310 285,320" />
+            <!-- Kaveri River -->
+            <path class="river-path" d="M 175,430 Q 215,440 250,435" />
+          </g>
+
+          <!-- ================= LAYER 2: DYNAMIC EMPIRE OVERLAYS ================= -->
+          <g id="empires-layer"></g>
+
+          <!-- ================= LAYER 3: LABELS ================= -->
+          <g id="labels-layer"></g>
         </svg>
       </div>
 
-      <!-- TIMELINE SLIDER -->
+      <!-- TEMPORAL SLIDER (All 3 Major Eras) -->
       <div class="timeline-scrubber-bar">
         <div class="scrubber-header">
-          <span>Temporal Chronology Scrubber</span>
+          <span>Historical Chronology Scrubber (Ancient • Medieval • Modern)</span>
           <span id="slider-year-label">c. 1658 CE</span>
         </div>
-        <input type="range" id="epoch-slider" min="0" max="4" step="1" value="2" oninput="setEpoch(this.value)">
+        <input type="range" id="epoch-slider" min="0" max="4" step="1" value="2" oninput="handleSliderChange(this.value)">
         <div class="slider-ticks">
-          <span onclick="setEpoch(0)">260 BCE</span>
-          <span onclick="setEpoch(1)">1025 CE</span>
-          <span onclick="setEpoch(2)" class="active">1658 CE</span>
-          <span onclick="setEpoch(3)">1765 CE</span>
-          <span onclick="setEpoch(4)">1940 CE</span>
+          <span onclick="setEpochIndex(0)">260 BCE<br>(Ancient)</span>
+          <span onclick="setEpochIndex(1)">1025 CE<br>(Early Med.)</span>
+          <span onclick="setEpochIndex(2)" class="active">1658 CE<br>(Late Med.)</span>
+          <span onclick="setEpochIndex(3)">1765 CE<br>(Colonial Rise)</span>
+          <span onclick="setEpochIndex(4)">1940 CE<br>(Modern Era)</span>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- ================= 3. MAP ENGINE & THEME SCRIPT ================= -->
   <script>
-    /* Theme Toggle Sync */
-    function updateThemeUI(theme) {
-      document.body.setAttribute('data-theme', theme);
-      const icon = document.getElementById('theme-icon');
-      const text = document.getElementById('theme-text');
-
-      if (theme === 'light') {
-        icon.textContent = '☀️';
-        text.textContent = 'Light';
-      } else {
-        icon.textContent = '🌙';
-        text.textContent = 'Dark';
-      }
-    }
-
-    function toggleTheme() {
-      const currentTheme = document.body.getAttribute('data-theme') || 'dark';
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      
-      localStorage.setItem('itihas_theme', newTheme);
-      updateThemeUI(newTheme);
-    }
-
-    // State grouping mapping across 5 eras
-    const ERA_DATA = [
-      // 0: ANCIENT (260 BCE)
+    // ACCURATE GEOGRAPHIC SNAPSHOTS COVERING ANCIENT, MEDIEVAL, AND MODERN HISTORY
+    const EPOCHS_DATABASE = [
+      // 0: ANCIENT HISTORY (c. 260 BCE - Mauryan Zenith & Sangam Age)
       {
         year: "c. 260 BCE",
-        factions: {
-          maurya: {
+        title: "Mauryan Hegemony & Sangam Tamilakam",
+        header: "Ancient Era: Ashokan Empire & The Deep South (c. 260 BCE)[cite: 1, 2]",
+        empires: [
+          {
+            id: "maurya-empire",
             name: "Maurya Empire",
-            regions: ["JK", "PB", "RJ", "GJ", "UP", "WB", "MP", "MH"],
             color: "#059669",
-            topic: "maurya-empire",
-            desc: "Subcontinental empire under Ashoka the Great, spanning from Gandhara to the Krishna River[cite: 1].",
-            stats: "Capital: Pataliputra • Strongholds: Taxila, Ujjain[cite: 1]"
+            stroke: "#34d399",
+            // Covers Northwest, Punjab, Gangetic plains, Gujarat, and northern Deccan
+            path: "M 180,50 C 230,30 265,40 340,75 C 390,110 360,180 345,190 C 310,210 270,270 230,360 C 190,360 160,320 145,260 C 120,240 85,220 105,150 C 125,120 150,90 180,50 Z",
+            labelX: 235,
+            labelY: 180,
+            desc: "Subcontinental continental empire under Ashoka the Great, commanding territory from Afghanistan to the Krishna River[cite: 1].",
+            strongholds: "Pataliputra (Capital), Taxila, Ujjain, Tosali[cite: 1]",
+            frontiers: "Independent Kalinga, Tamil Sangam kingdoms in deep south[cite: 1, 2]"
           },
-          sangam: {
-            name: "Sangam Tamilakam",
-            regions: ["KA", "TN", "AP"],
+          {
+            id: "sangam-age",
+            name: "Sangam Tamilakam (Chera/Chola/Pandya)",
             color: "#0284c7",
-            topic: "sangam-age",
-            desc: "The crowned monarchs of the South (Chera, Chola, Pandya) controlling Indian Ocean maritime trade[cite: 2].",
-            stats: "Ports: Muziris, Korkai • Capital: Madurai[cite: 2]"
+            stroke: "#7dd3fc",
+            // Covers southern tip of peninsular India
+            path: "M 230,360 C 270,390 260,450 240,480 C 220,520 210,535 190,490 C 170,440 180,390 230,360 Z",
+            labelX: 215,
+            labelY: 440,
+            desc: "The three crowned kings (Muvendar) of classical Tamil literature, commanding Roman maritime spice and pearl routes through Muziris and Korkai[cite: 2].",
+            strongholds: "Madurai, Karur, Kaveripattinam, Muziris[cite: 2]",
+            frontiers: "Mauryan southern garrisons along the Pennar river[cite: 1]"
           }
-        }
+        ]
       },
-      // 1: EARLY MEDIEVAL (1025 CE)
+
+      // 1: EARLY MEDIEVAL HISTORY (c. 1025 CE - Imperial Cholas & Chalukyas)
       {
         year: "c. 1025 CE",
-        factions: {
-          chola: {
+        title: "Imperial Chola Maritime Zenith",
+        header: "Early Medieval Era: Imperial Chola Maritime Age (c. 1025 CE)[cite: 1]",
+        empires: [
+          {
+            id: "chola-empire",
             name: "Imperial Chola Empire",
-            regions: ["TN", "KA", "AP"],
             color: "#ea580c",
-            topic: "chola-empire",
-            desc: "Naval and military peak under Rajendra Chola I, commanding South India and the Bay of Bengal[cite: 1].",
-            stats: "Capital: Gangaikondacholapuram • Naval Bases: Nagapattinam[cite: 1]"
+            stroke: "#fb923c",
+            // Covers Tamil coast, Kaveri delta, Sri Lanka, and Coromandel coast
+            path: "M 180,380 C 230,350 270,320 290,280 C 310,260 300,320 280,360 C 265,420 240,480 210,535 C 190,500 170,440 180,380 Z",
+            labelX: 235,
+            labelY: 410,
+            desc: "Naval and military peak under Rajendra Chola I, commanding South India, the Bay of Bengal, and maritime expeditions into Southeast Asia[cite: 1].",
+            strongholds: "Thanjavur, Gangaikondacholapuram, Kanchipuram[cite: 1]",
+            frontiers: "Western Chalukyas of Kalyani, Eastern Gangas of Odisha[cite: 1]"
           },
-          rajput: {
+          {
+            id: "rajput-kingdoms",
             name: "Rajput & Northern Dynasties",
-            regions: ["RJ", "GJ", "MP", "PB"],
             color: "#b45309",
-            topic: "rajput-kingdoms",
-            desc: "Independent fortress confederacies defending northern trade corridors[cite: 4].",
-            stats: "Fortresses: Chittorgarh, Ajmer, Patan[cite: 4]"
+            stroke: "#fcd34d",
+            // Covers Rajasthan, Gujarat, Central India
+            path: "M 120,150 C 160,110 220,100 270,120 C 290,160 260,220 220,230 C 160,235 110,220 120,150 Z",
+            labelX: 190,
+            labelY: 170,
+            desc: "Regional kingdoms including the Chahamanas, Paramaras, and Solankis maintaining defensive fort systems across Central India[cite: 4].",
+            strongholds: "Ajmer, Chittorgarh, Patan, Dhar[cite: 4]",
+            frontiers: "Ghaznavid border incursions in Punjab"
           }
-        }
+        ]
       },
-      // 2: LATE MEDIEVAL (1658 CE)
+
+      // 2: LATE MEDIEVAL HISTORY (c. 1658 CE - Mughal Zenith & Maratha Rise)
       {
         year: "c. 1658 CE",
-        factions: {
-          mughal: {
+        title: "Mughal Empire & Maratha Swarajya",
+        header: "Late Medieval Era: Gunpowder Empires & Deccan Wars (c. 1658 CE)[cite: 1, 5]",
+        empires: [
+          {
+            id: "mughal-empire",
             name: "Mughal Empire",
-            regions: ["JK", "PB", "UP", "WB", "RJ", "GJ", "MP", "NE"],
             color: "#dc2626",
-            topic: "mughal-empire",
-            desc: "Continental gunpowder state under Aurangzeb, holding Delhi, Agra, and Bengal[cite: 1, 5].",
-            stats: "Imperial Capitals: Delhi, Agra, Lahore[cite: 1, 5]"
+            stroke: "#f87171",
+            // Massive Northern & Central landmass down to Deccan frontier
+            path: "M 180,50 C 240,25 285,55 350,85 C 410,120 380,180 345,185 C 310,200 260,230 200,240 C 150,245 120,230 90,180 C 110,140 150,90 180,50 Z",
+            labelX: 230,
+            labelY: 130,
+            desc: "Continental gunpowder state under Aurangzeb, holding Delhi, Agra, Bengal, and Gujarat while pressing south into the Deccan[cite: 1, 5].",
+            strongholds: "Delhi, Agra, Lahore, Daulatabad[cite: 1, 5]",
+            frontiers: "Western Ghats hill fortresses (Marathas), Deccan Sultanates[cite: 1]"
           },
-          maratha: {
+          {
+            id: "maratha-empire",
             name: "Maratha Swarajya",
-            regions: ["MH"],
             color: "#f59e0b",
-            topic: "maratha-empire",
-            desc: "Sovereign hill fort state founded by Chhatrapati Shivaji Maharaj using guerrilla warfare[cite: 1].",
-            stats: "Fortresses: Raigad, Pratapgad, Sinhagad[cite: 1]"
+            stroke: "#fde68a",
+            // Western Ghats rugged mountain pocket
+            path: "M 140,260 C 170,255 175,280 170,320 C 155,340 145,310 135,280 Z",
+            labelX: 148,
+            labelY: 295,
+            desc: "Sovereign confederacy established by Chhatrapati Shivaji Maharaj utilizing mountain guerrilla tactics (Ganimi Kava)[cite: 1].",
+            strongholds: "Raigad (Capital), Rajgad, Pratapgad, Sinhagad[cite: 1]",
+            frontiers: "Mughal Deccan armies, Bijapur Sultanate borders"
           },
-          deccan: {
-            name: "Deccan Sultanates",
-            regions: ["AP", "KA"],
-            color: "#06b6d4",
-            topic: "delhi-sultanate",
-            desc: "Bijapur and Golconda sultanates under siege from imperial forces[cite: 1].",
-            stats: "Strongholds: Golconda, Bijapur"
+          {
+            id: "delhi-sultanate",
+            name: "Deccan Sultanates (Bijapur/Golconda)",
+            color: "#0284c7",
+            stroke: "#38bdf8",
+            // Eastern and Southern Deccan
+            path: "M 175,280 C 230,260 270,280 260,330 C 240,360 180,360 170,320 Z",
+            labelX: 220,
+            labelY: 310,
+            desc: "Regional Islamic sultanates of Golconda and Bijapur, wealthy from diamond mines but under siege from imperial Mughal forces[cite: 1].",
+            strongholds: "Golconda, Bijapur, Gulbarga",
+            frontiers: "Mughal northern armies, Maratha raiding corridors[cite: 1]"
           }
-        }
+        ]
       },
-      // 3: 18TH CENTURY (1765 CE)
+
+      // 3: 18TH CENTURY TRANSITION (c. 1765 CE - Post-Buxar & Maratha Confederacy)
       {
         year: "c. 1765 CE",
-        factions: {
-          maratha_confed: {
+        title: "Maratha Confederacy & British Diwani Rights",
+        header: "18th-Century Transition: Treaty of Allahabad & Maratha Supremacy (c. 1765 CE)[cite: 1, 5]",
+        empires: [
+          {
+            id: "maratha-empire",
             name: "Maratha Confederacy",
-            regions: ["MH", "MP", "GJ", "RJ", "KA"],
             color: "#d97706",
-            topic: "maratha-empire",
-            desc: "Dominant power across central India under the Peshwas following third Panipat[cite: 1, 4, 5].",
-            stats: "Seats: Pune, Gwalior, Indore, Nagpur[cite: 1]"
+            stroke: "#fde68a",
+            // Spans Western India, Central India, Malwa, and reaches into Delhi
+            path: "M 115,220 C 160,180 230,160 260,180 C 270,240 260,330 180,350 C 145,340 135,270 115,220 Z",
+            labelX: 195,
+            labelY: 260,
+            desc: "Dominant power across central and western India under the Peshwas following the third battle of Panipat[cite: 1, 4, 5].",
+            strongholds: "Pune (Peshwa seat), Gwalior (Scindia), Indore (Holkar), Nagpur (Bhonsle)[cite: 1]",
+            frontiers: "British in Bengal, Nizam of Hyderabad, Kingdom of Mysore[cite: 1, 5]"
           },
-          eic: {
-            name: "British East India Company",
-            regions: ["WB", "TN"],
-            color: "#b91c1c",
-            topic: "east-india-company",
-            desc: "Commercial trading company turned sovereign tax collector in Bengal[cite: 1, 5].",
-            stats: "Presidencies: Fort William (Calcutta), Madras[cite: 1]"
+          {
+            id: "east-india-company",
+            name: "British East India Company (Bengal & Madras)",
+            color: "#dc2626",
+            stroke: "#fca5a5",
+            // Bengal presidency patch & Madras coastal strip
+            path: "M 320,160 C 365,150 400,160 380,210 C 350,225 330,200 320,160 Z",
+            labelX: 350,
+            labelY: 185,
+            desc: "Commercial trading company transformed into sovereign tax collector (Diwani) of Bengal, Bihar, and Orissa following the Battle of Buxar[cite: 1, 5].",
+            strongholds: "Fort William (Calcutta), Fort St. George (Madras)[cite: 1]",
+            frontiers: "Nawab of Awadh, Maratha border garrisons[cite: 1, 5]"
           }
-        }
+        ]
       },
-      // 4: MODERN ERA (1940 CE)
+
+      // 4: MODERN FREEDOM ERA (c. 1940 CE - British India vs Princely States)
       {
         year: "c. 1940 CE",
-        factions: {
-          british_raj: {
-            name: "British Indian Provinces",
-            regions: ["PB", "UP", "WB", "MH", "TN", "NE"],
+        title: "British Raj & Princely States Network",
+        header: "Modern Freedom Movement Era: Presidencies & Princely States (c. 1940 CE)",
+        empires: [
+          {
+            id: "civil-disobedience",
+            name: "British Indian Provinces (Crown Rule)",
             color: "#991b1b",
-            topic: "civil-disobedience",
-            desc: "Direct British Crown administrative provinces undergoing the Quit India movement.",
-            stats: "Capital: New Delhi • Presidencies: Bombay, Bengal, Madras"
+            stroke: "#f87171",
+            // British direct rule provinces (Punjab, UP, Bengal, Bombay, Madras)
+            path: "M 180,50 C 240,25 315,65 375,120 C 360,180 330,220 280,290 C 270,370 240,460 210,535 C 180,480 155,380 135,255 C 90,200 120,130 180,50 Z",
+            labelX: 260,
+            labelY: 160,
+            desc: "Direct British Crown administrative provinces, epicenter of the Indian National Congress civil disobedience and Quit India campaigns.",
+            strongholds: "New Delhi (Viceroy Seat), Bombay, Calcutta, Madras",
+            frontiers: "565 sovereign Princely States governed by treaties"
           },
-          princely: {
-            name: "Princely States Network",
-            regions: ["JK", "RJ", "GJ", "MP", "AP", "KA"],
+          {
+            id: "independence-partition",
+            name: "Princely States (Hyderabad/Kashmir/Rajputana)",
             color: "#7c3aed",
-            topic: "independence-partition",
-            desc: "Semi-autonomous royal domains integrated into modern India in 1947.",
-            stats: "Major States: Hyderabad, Kashmir, Mysore, Rajputana"
+            stroke: "#c084fc",
+            // Major semi-autonomous Princely pockets (Deccan & Desert)
+            path: "M 190,280 C 245,270 250,330 220,350 C 185,340 180,300 190,280 Z",
+            labelX: 215,
+            labelY: 310,
+            desc: "Semi-autonomous royal domains integrated into the Republic of India after August 1947 by Sardar Vallabhbhai Patel.",
+            strongholds: "Hyderabad, Srinagar, Jaipur, Mysore",
+            frontiers: "Allied subsidiary treaties with the British Crown"
           }
-        }
+        ]
       }
     ];
 
-    let currentEpoch = 2;
-    let currentFactionKey = null;
+    let currentEpochIndex = 2; // Defaults to 1658 CE
+    let activeEmpireId = "mughal-empire";
 
-    function renderMap() {
-      const data = ERA_DATA[currentEpoch];
+    function renderEpoch(index) {
+      currentEpochIndex = index;
+      const data = EPOCHS_DATABASE[index];
+
+      // Update Header & Slider
       document.getElementById("slider-year-label").textContent = data.year;
+      document.getElementById("map-header-title").textContent = data.header;
 
-      const isLight = document.body.getAttribute('data-theme') === 'light';
-      const defaultNeutralColor = isLight ? "#cbd5e1" : "#1e293b";
+      // Update Slider tick styling
+      const ticks = document.querySelectorAll(".slider-ticks span");
+      ticks.forEach((tick, i) => tick.classList.toggle("active", i === parseInt(index)));
 
-      // Reset all state colors
-      document.querySelectorAll(".state-region").forEach(el => {
-        el.style.fill = defaultNeutralColor;
-        el.dataset.faction = "";
+      // Render Dynamic SVG Polygons
+      const empiresLayer = document.getElementById("empires-layer");
+      const labelsLayer = document.getElementById("labels-layer");
+      empiresLayer.innerHTML = "";
+      labelsLayer.innerHTML = "";
+
+      data.empires.forEach(emp => {
+        // SVG Polygon
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("id", emp.id);
+        path.setAttribute("class", `empire-territory ${emp.id === activeEmpireId ? "active" : ""}`);
+        path.setAttribute("d", emp.path);
+        path.setAttribute("fill", emp.color);
+        path.setAttribute("stroke", emp.stroke);
+        path.onclick = () => selectEmpire(emp);
+        empiresLayer.appendChild(path);
+
+        // Text Label on Map
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("class", "territory-label");
+        text.setAttribute("x", emp.labelX);
+        text.setAttribute("y", emp.labelY);
+        text.textContent = emp.name;
+        labelsLayer.appendChild(text);
       });
 
-      // Color each state by faction
-      Object.keys(data.factions).forEach(fKey => {
-        const faction = data.factions[fKey];
-        faction.regions.forEach(regId => {
-          const el = document.getElementById(regId);
-          if (el) {
-            el.style.fill = faction.color;
-            el.dataset.faction = fKey;
-          }
-        });
-      });
-
-      const firstFKey = Object.keys(data.factions)[0];
-      selectFaction(firstFKey);
+      // Select default empire in this epoch
+      const defaultEmp = data.empires.find(e => e.id === activeEmpireId) || data.empires[0];
+      selectEmpire(defaultEmp);
     }
 
-    function clickRegion(regId) {
-      const el = document.getElementById(regId);
-      const fKey = el.dataset.faction;
-      if (fKey) {
-        selectFaction(fKey);
-      }
+    function selectEmpire(emp) {
+      activeEmpireId = emp.id;
+      const epochData = EPOCHS_DATABASE[currentEpochIndex];
+
+      // Highlight active polygon
+      const polygons = document.querySelectorAll(".empire-territory");
+      polygons.forEach(p => p.classList.toggle("active", p.id === emp.id));
+
+      // Update Left Inspector
+      document.getElementById("insp-title").textContent = emp.name;
+      document.getElementById("insp-epoch").textContent = `${epochData.year} • ${epochData.title}`;
+      document.getElementById("insp-desc").textContent = emp.desc;
+      document.getElementById("insp-stats").innerHTML = `
+        <strong>Strategic Strongholds:</strong> ${emp.strongholds}<br>
+        <strong>Frontier Boundaries:</strong> ${emp.frontiers}
+      `;
+
+      // Direct Link to Timeline
+      const jumpBtn = document.getElementById("insp-jump");
+      jumpBtn.href = `timeline.html?topic=${emp.id}`;
+      jumpBtn.textContent = `Launch ${emp.name} Timeline ➔`;
     }
 
-    function selectFaction(fKey) {
-      currentFactionKey = fKey;
-      const data = ERA_DATA[currentEpoch];
-      const faction = data.factions[fKey];
-      if (!faction) return;
-
-      document.getElementById("insp-title").textContent = faction.name;
-      document.getElementById("insp-epoch").textContent = `${data.year} Sovereign Boundary`;
-      document.getElementById("insp-desc").textContent = faction.desc;
-      document.getElementById("insp-stats").innerHTML = faction.stats;
-      document.getElementById("insp-jump").href = `timeline.html?topic=${faction.topic}`;
-      document.getElementById("insp-jump").textContent = `Launch ${faction.name} Timeline ➔`;
+    function handleSliderChange(val) {
+      renderEpoch(parseInt(val));
     }
 
-    function setEpoch(val) {
-      currentEpoch = parseInt(val);
-      document.getElementById("epoch-slider").value = currentEpoch;
-      document.querySelectorAll(".slider-ticks span").forEach((s, idx) => {
-        s.classList.toggle("active", idx === currentEpoch);
-      });
-      renderMap();
+    function setEpochIndex(idx) {
+      document.getElementById("epoch-slider").value = idx;
+      renderEpoch(idx);
     }
 
+    // Initialize in 1658 CE
     window.addEventListener("DOMContentLoaded", () => {
-      // Sync saved theme preference
-      const savedTheme = localStorage.getItem('itihas_theme') || 'dark';
-      updateThemeUI(savedTheme);
-
-      renderMap();
+      renderEpoch(2);
     });
   </script>
 </body>
